@@ -4,6 +4,81 @@
     "radialVelocity": "Velocidad Radial",
     "transit": "Tránsito"
   },
+  "units": {
+    "mJupiter": "M<sub>Jup</sub>",
+    "mSun": "M<sub>Sun</sub>",
+    "rJupiter": "R<sub>Jup</sub>",
+    "rSun": "R<sub>Sun</sub>",
+    "au": "AU",
+    "degrees": "°",
+    "metersPerSecond": "m/s",
+    "days": "days",
+    "hours": "hours",
+    "kelvin": "K"
+  },
+  "radialVelocity": {
+    "controls": {
+      "planetMass": "Planet Mass",
+      "starMass": "Star Mass",
+      "semimajorAxis": "Semimajor Axis",
+      "eccentricity": "Eccentricity",
+      "inclination": "Inclination",
+      "longitude": "Longitude",
+      "noise": "Noise",
+      "numberOfMeasurements": "Number of Measurements",
+      "animationSpeed": "Animation Speed",
+      "showTheoreticalCurve": "Show Theoretical Curve",
+      "showSimulatedMeasurements": "Show Simulated Measurements",
+      "showMultipleViews": "Show Multiple Views"
+    },
+    "readouts": {
+      "systemPeriodPattern": "System period: {{value}} days",
+      "amplitudePattern": "Amplitude: {{value}} m/s",
+      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+    },
+    "chart": {
+      "title": "Radial Velocity Curve",
+      "xAxisLabel": "Phase",
+      "yAxisLabel": "Velocity (m/s)"
+    },
+    "viewTitles": {
+      "orbitView": "Orbit View",
+      "sideView": "Side View",
+      "earthView": "Earth View",
+      "orbitView3D": "3D Orbit View"
+    }
+  },
+  "transit": {
+    "controls": {
+      "planetMass": "Planet Mass",
+      "planetRadius": "Planet Radius",
+      "starMass": "Star Mass",
+      "semimajorAxis": "Semimajor Axis",
+      "eccentricity": "Eccentricity",
+      "inclination": "Inclination",
+      "longitude": "Longitude",
+      "noise": "Noise",
+      "numberOfMeasurements": "Number of Measurements",
+      "animationSpeed": "Animation Speed",
+      "showTheoreticalCurve": "Show Theoretical Curve",
+      "showSimulatedMeasurements": "Show Simulated Measurements"
+    },
+    "readouts": {
+      "systemPeriodPattern": "System period: {{value}} days",
+      "eclipseDepthPattern": "Eclipse depth: {{value}}",
+      "eclipseDurationPattern": "Eclipse duration: {{value}} hours",
+      "noEclipse": "No eclipse (planet does not transit)",
+      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+    },
+    "chart": {
+      "title": "Light Curve",
+      "xAxisLabel": "Phase",
+      "yAxisLabel": "Normalized Flux"
+    },
+    "viewTitles": {
+      "transitView": "Transit View"
+    }
+  },
   "a11y": {
     "radialVelocity": {
       "screenSummary": {

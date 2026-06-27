@@ -71,6 +71,69 @@ const ExtrasolarPlanetsColors = {
     default: "#e0e0e0",
     projector: "#1a1a1a",
   }),
+
+  /**
+   * Plotting-area background for the bamboo charts (slightly darker than the
+   * screen background so the chart reads as a distinct surface).
+   */
+  chartBackgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartBackground", {
+    default: "#0d1117",
+    projector: "#ffffff",
+  }),
+
+  /** Grid-line color inside the charts. Dim navy in default mode; light gray in projector. */
+  chartGridColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartGrid", {
+    default: "#2a3a5a",
+    projector: "#dddddd",
+  }),
+
+  /** Color of the theoretical (predicted) curve drawn on the charts. */
+  theoreticalCurveColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "theoreticalCurve", {
+    default: "#4fc3f7",
+    projector: "#1565c0",
+  }),
+
+  /** Color of the vertical phase-indicator line that tracks the orbit. */
+  phaseIndicatorColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "phaseIndicator", {
+    default: "#ffca28",
+    projector: "#e65100",
+  }),
+
+  /** Color of the simulated-measurement scatter points on the charts. */
+  measurementColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "measurement", {
+    default: "#ffb74d",
+    projector: "#c43c00",
+  }),
+
+  /** Host-star disk in the orbit/transit visualizations. */
+  starColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "star", {
+    default: "#ffd54f",
+    projector: "#e65100",
+  }),
+
+  /** Planet disk in the orbit/transit visualizations. */
+  planetColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "planet", {
+    default: "#90a4ae",
+    projector: "#37474f",
+  }),
+
+  /** Orbit ellipse/path drawn in the orbit visualizations. */
+  orbitPathColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "orbitPath", {
+    default: "#546e7a",
+    projector: "#9e9e9e",
+  }),
+
+  /** Line-of-sight / observer indicator in the RV side & earth views. */
+  lineOfSightColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "lineOfSight", {
+    default: "#81c784",
+    projector: "#2e7d32",
+  }),
+
+  /** Sky background for the transit visualization (deep space). */
+  skyBackgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "skyBackground", {
+    default: "#000000",
+    projector: "#222222",
+  }),
 };
 
 export default ExtrasolarPlanetsColors;

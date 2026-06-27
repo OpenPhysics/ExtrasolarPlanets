@@ -100,6 +100,21 @@ export class StringManager {
     return stringProperties.a11y.transit;
   }
 
+  /** Shared unit-label StringProperties (e.g. AU, °, m/s) for value patterns. */
+  public getUnits() {
+    return stringProperties.units;
+  }
+
+  /** Radial Velocity screen control labels + readout patterns. */
+  public getRadialVelocityStrings() {
+    return stringProperties.radialVelocity;
+  }
+
+  /** Transit screen control labels + readout patterns. */
+  public getTransitStrings() {
+    return stringProperties.transit;
+  }
+
   /**
    * Simulation-specific preference labels shown in Preferences → Simulation.
    */
