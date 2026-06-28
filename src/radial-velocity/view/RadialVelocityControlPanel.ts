@@ -8,13 +8,15 @@
  */
 
 import { DerivedProperty, PatternStringProperty } from "scenerystack/axon";
-import { type Node, RichText, VBox } from "scenerystack/scenery";
-import { Checkbox } from "scenerystack/sun";
+import { type Node, RichText, Text, VBox } from "scenerystack/scenery";
+import { Checkbox, ComboBox, type ComboBoxItem } from "scenerystack/sun";
 import { ExtrasolarPlanetsPanel } from "../../common/ExtrasolarPlanetsPanel.js";
 import { createNumberControl } from "../../common/view/createNumberControl.js";
 import { StarPropertiesNode } from "../../common/view/StarPropertiesNode.js";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import {
+  RADIAL_VELOCITY_PRESETS,
+  type RadialVelocityPreset,
   RV_ANIMATION_SPEED_RANGE,
   RV_ECCENTRICITY_RANGE,
   RV_INCLINATION_RANGE,
@@ -40,10 +42,24 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
   /** The interactive nodes, in tab order, for the ScreenView's pdomOrder. */
   public readonly controlsInOrder: Node[];
 
-  public constructor(model: RadialVelocityModel) {
+  public constructor(model: RadialVelocityModel, listParent: Node) {
     const strings = StringManager.getInstance().getRadialVelocityStrings();
     const units = StringManager.getInstance().getUnits();
     const controls = strings.controls;
+    const a11yStrings = StringManager.getInstance().getRadialVelocityA11yStrings();
+
+    // ── Preset combo box (selects a whole parameter set) ────────────────────────
+    const presetItems: ComboBoxItem<RadialVelocityPreset>[] = RADIAL_VELOCITY_PRESETS.map((preset) => ({
+      value: preset,
+      createNode: () =>
+        new Text(preset.name, { font: "13px sans-serif", fill: ExtrasolarPlanetsColors.textColorProperty }),
+      accessibleName: preset.name,
+    }));
+    const presetComboBox = new ComboBox(model.presetProperty, presetItems, listParent, {
+      accessibleName: a11yStrings.controls.presetStringProperty,
+      xMargin: 8,
+      listPosition: "below",
+    });
 
     const planetMassControl = createNumberControl(
       controls.planetMassStringProperty,
@@ -145,6 +161,7 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
       align: "left",
       spacing: 8,
       children: [
+        presetComboBox,
         planetMassControl,
         semimajorAxisControl,
         eccentricityControl,
@@ -166,6 +183,7 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
     super(content);
 
     this.controlsInOrder = [
+      presetComboBox,
       planetMassControl,
       semimajorAxisControl,
       eccentricityControl,

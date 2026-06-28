@@ -30,6 +30,7 @@ import { Range, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import { Orientation } from "scenerystack/phet-core";
 import { Line, Node, Text } from "scenerystack/scenery";
+import { ArrowNode } from "scenerystack/scenery-phet";
 import { computeCurveYRange, decimalPlacesForStep, formatTickValue, niceStep } from "../../common/view/chartUtils.js";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import { CHART_VIEW_HEIGHT, CHART_VIEW_WIDTH } from "../../ExtrasolarPlanetsConstants.js";
@@ -44,6 +45,8 @@ const FLAT_HALF_WINDOW_FLUX = 0.01;
 const CHART_LEFT_PADDING = 54;
 /** Room for the chart title above the plotting area. */
 const CHART_TOP_PADDING = 28;
+/** Vertical position (px from top of plotting area) of the eclipse-duration arrow. */
+const DURATION_ARROW_Y = 16;
 
 const TICK_LABEL_FONT = "12px sans-serif";
 const TITLE_FONT = "14px sans-serif";
@@ -136,10 +139,35 @@ export class TransitChartNode extends Node {
     model.phaseProperty.link(updatePhaseIndicator);
     chartTransform.changedEmitter.addListener(updatePhaseIndicator);
 
+    // ── Eclipse-duration arrow (spans first→last contact of the transit) ────────
+    // Double-headed, near the top of the plot. Hidden for non-transiting systems
+    // (zero/empty interval) and redrawn whenever the interval or y-axis changes.
+    const durationArrow = new ArrowNode(0, DURATION_ARROW_Y, 0, DURATION_ARROW_Y, {
+      doubleHead: true,
+      headHeight: 8,
+      headWidth: 8,
+      tailWidth: 2,
+      fill: ExtrasolarPlanetsColors.durationArrowColorProperty,
+      stroke: ExtrasolarPlanetsColors.durationArrowColorProperty,
+    });
+    const updateDurationArrow = (): void => {
+      const interval = model.eclipseIntervalProperty.value;
+      if (interval.occurs && interval.endPhase > interval.startPhase) {
+        const startX = chartTransform.modelToViewX(interval.startPhase);
+        const endX = chartTransform.modelToViewX(interval.endPhase);
+        durationArrow.setTailAndTip(startX, DURATION_ARROW_Y, endX, DURATION_ARROW_Y);
+        durationArrow.setVisible(true);
+      } else {
+        durationArrow.setVisible(false);
+      }
+    };
+    model.eclipseIntervalProperty.link(updateDurationArrow);
+    chartTransform.changedEmitter.addListener(updateDurationArrow);
+
     // ── Layering: clip plots to the plotting area, keep labels outside ──────────
     const clippedLayer = new Node({
       clipArea: Shape.rect(0, 0, CHART_VIEW_WIDTH, CHART_VIEW_HEIGHT),
-      children: [chartRectangle, xGrid, yGrid, baselineAxis, fluxPlot, measurementPlot, phaseIndicator],
+      children: [chartRectangle, xGrid, yGrid, baselineAxis, fluxPlot, measurementPlot, durationArrow, phaseIndicator],
     });
     const chartLayer = new Node({
       translation: new Vector2(CHART_LEFT_PADDING, CHART_TOP_PADDING),

@@ -43,6 +43,10 @@ export class TransitScreenView extends ScreenView {
     });
     this.addChild(backgroundRect);
 
+    // Combo-box list parent — created here (passed into the control panel below)
+    // but added as the LAST child so its dropdown overlays every panel.
+    const comboBoxListParent = new Node();
+
     // ── Chart ───────────────────────────────────────────────────────────────────
     const chartNode = new TransitChartNode(model);
     chartNode.left = SCREEN_VIEW_MARGIN;
@@ -60,7 +64,7 @@ export class TransitScreenView extends ScreenView {
     this.addChild(transitViz);
 
     // ── Control panel ───────────────────────────────────────────────────────────
-    const controlPanel = new TransitControlPanel(model);
+    const controlPanel = new TransitControlPanel(model, comboBoxListParent);
     const availableHeight = this.layoutBounds.height - 2 * SCREEN_VIEW_MARGIN;
     if (controlPanel.height > availableHeight) {
       controlPanel.setScaleMagnitude(availableHeight / controlPanel.height);
@@ -99,6 +103,9 @@ export class TransitScreenView extends ScreenView {
         pdomOrder: [...controlPanel.controlsInOrder, timeControlNode, resetAllButton],
       }),
     );
+
+    // Combo-box dropdown overlay (kept on top of all panels).
+    this.addChild(comboBoxListParent);
   }
 
   public reset(): void {

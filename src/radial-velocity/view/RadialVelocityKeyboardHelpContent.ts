@@ -2,15 +2,22 @@
  * RadialVelocityKeyboardHelpContent.ts
  *
  * Content for the keyboard-help dialog (the "?" button in the navigation bar).
- * The scaffold's only interactions are buttons and Reset All, so a single
- * basic-actions section covers the available keyboard controls. Add a slider or
- * combo-box section here as the screen grows.
+ * Left column: how to operate the sliders and the preset combo box. Right
+ * column: the basic actions (play/pause, reset).
  */
 
-import { BasicActionsKeyboardHelpSection, TwoColumnKeyboardHelpContent } from "scenerystack/scenery-phet";
+import {
+  BasicActionsKeyboardHelpSection,
+  ComboBoxKeyboardHelpSection,
+  SliderControlsKeyboardHelpSection,
+  TwoColumnKeyboardHelpContent,
+} from "scenerystack/scenery-phet";
 
 export class RadialVelocityKeyboardHelpContent extends TwoColumnKeyboardHelpContent {
   public constructor() {
-    super([new BasicActionsKeyboardHelpSection()], []);
+    super(
+      [new SliderControlsKeyboardHelpSection(), new ComboBoxKeyboardHelpSection()],
+      [new BasicActionsKeyboardHelpSection()],
+    );
   }
 }

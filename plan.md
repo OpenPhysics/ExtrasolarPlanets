@@ -264,3 +264,38 @@ Each milestone adds Properties before any view references them and adds new stri
    and the deployed `astroUNL/naap/esp/animations/*.swf` if numbers diverge.
 4. Accessibility: tab through every control (order matches `pdomOrder`), confirm screen-summary `currentDetails` updates live as parameters change, and the keyboard-help dialog lists slider + combo-box sections.
 5. Optionally drive the running sim with the Playwright MCP browser tools for a screenshot diff against the two reference images (`NAAP/astroUNL/naap/esp/animations/radialVelocitySimulator.jpg` and `…/transitSimulator.jpg`).
+
+## Status (as of 2026-06-27)
+
+`npm run check` clean; `npm run lint` clean; `npm test` → **64 passing**
+(`TimeModel` 5 · `RandomUtils` 5 · `Projection3D` 9 · `OrbitalMechanics` 17 ·
+`StarProperties` 11 · `EclipseGeometry` 11 · `Presets` 6); `npm run build` and
+`npm run build:single` both succeed (manifest + service worker + icons emit).
+
+| Milestone | State | Notes |
+|---|---|---|
+| **M0 — Shared core** | ✓ done | All 5 modules + unit tests. Constants carry every slider `Range` + SI values + both preset tables + `*_DEFAULT_PRESET`. |
+| **M1 — Models + control panels** | ✓ done | Both models: Properties, derived (RV `periodDays`/`amplitude`/`starProperties`; transit `systemPeriodDays`/`eclipseDepth`/`eclipseDurationHours`/`starProperties`), measurement `Multilink`, `step`/`reset`. Panels: every `NumberControl` (with `accessibleName`), checkboxes, `StarPropertiesNode`, period/amplitude/depth/duration readouts. |
+| **M2 — Charts** | ✓ done | bamboo skeleton + theoretical `LinePlot` + axes + phase indicator on both. |
+| **M3 — Measurements** | ✓ done | `ScatterPlot` visibility-bound to `showSimulatedMeasurements` on both; noise/number controls wired. |
+| **M4 — Visualizations + animation** | ✓ done | `OrbitViewsNode` (side/earth/2D + **3D** via `Projection3D`), `TransitVisualizationNode`, `TimeControlNode` on both; `showMultipleViews` toggle on RV. |
+| **M5 — Polish** | ✓ done | Preset `ComboBox`es (7/11) with `comboBoxListParent` overlay; transit eclipse-duration `ArrowNode`; live a11y `currentDetails`; slider + combo-box keyboard-help sections; custom icon + PWA manifest. See "Decisions made this pass" below. |
+
+### Decisions made this pass (worth recording)
+
+- **Option A is now the default state on both screens.** The `*_DEFAULT` constants for the preset-controlled params were aligned with preset #1 (RV `ecc→0`, `long→0`; transit `planetMass→1`, `planetRadius→1`, `starMass→1`, `axis→1`, `incl→90`). This makes the combo's initial selection, the slider values, and `reset()` all agree, and gives both screens the same pedagogical baseline (a 1 M_Jup planet at 1 AU around a 1 M_sun star). `RADIAL_VELOCITY_DEFAULT_PRESET` / `TRANSIT_DEFAULT_PRESET` are defined with a `??` fallback so no non-null assertion is needed.
+- **Preset names stay as plain-string constants, not locale keys.** They are proper nouns / `"N. Option X"` labels verbatim from the Flash ComboBox (`DoAction_2.as`), so they live in `ExtrasolarPlanetsConstants.ts` and are rendered as `Text(preset.name)`. Only the translatable chrome (the combo's `accessibleName` = `a11y.<screen>.controls.preset`) was added to the locale JSON.
+- **Live `currentDetails` uses plain `String.replace`, not `PatternStringProperty`.** Screen-reader text should carry no rich-text markup, so a `DerivedProperty<string>` over the model + the localized pattern(s), with `{{placeholder}}` substitution, is both simpler and more correct. Transit has two patterns (`currentDetailsTransitingPattern` / `currentDetailsNoTransitPattern`) selected from `eclipseInterval.occurs`.
+- **`presets.*` JSON keys were intentionally NOT added** (proper nouns); the plan's "presets.* (7/11 names)" line is satisfied by the constants tables instead. Key parity across en/es/fr still holds (verified by diffing sorted JSON paths).
+
+## Remaining work
+
+1. **Runtime verification (§Verification 2, 4, 5) — the only outstanding item.**
+   Static gates are green (#1 tsc/lint/tests/build; #3 numeric spot-checks are unit-tested in `EclipseGeometry`/`OrbitalMechanics`/`Presets`). Still to run by hand:
+   - **§V2 — in-browser manual sweep:** `npm run dev`, then on each screen drag every slider through its range, apply each preset (RV 7, transit 11), toggle theoretical-curve / measurements / multiple-views, and run the animation — confirm the moving phase indicator tracks the orbit/transit and the y-axis rescales sensibly.
+   - **§V4 — a11y tab-through:** tab through the `pdomOrder` (combo → number controls → checkboxes → time control → reset), confirm the live `currentDetails` paragraph re-announces as parameters change, and that the "?" keyboard-help dialog lists slider + combo-box + basic-actions sections.
+   - **§V5 (optional) — screenshot diff** vs `NAAP/astroUNL/naap/esp/animations/{radialVelocity,transit}Simulator.jpg` via the Playwright MCP browser tools.
+
+2. **Localization review (optional polish).** The es/fr translations were produced by this pass and are complete (key parity verified), but a fluent speaker should review them before a real release — especially the a11y `currentDetails` patterns and the screen-summary sentences.
+
+No further code changes are required to meet the plan's scope; the above is verification + review only.

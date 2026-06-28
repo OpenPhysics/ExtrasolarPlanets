@@ -6,32 +6,53 @@
  * a non-visual user a way to orient themselves and to re-read the screen's
  * current state at any time.
  *
- * A summary has four regions:
- *   - playAreaContent       — what the play area contains
- *   - controlAreaContent    — what the controls do
- *   - currentDetailsContent — a LIVE paragraph describing current state
- *   - interactionHintContent — a short hint on how to get started
- *
- * ── Making "current details" live ─────────────────────────────────────────────
- * This scaffold has no model state, so currentDetails is a static string. In a
- * real sim, build a PatternStringProperty/DerivedProperty over the relevant
- * model Properties and pass it as `currentDetailsContent` so the paragraph
- * updates as the sim runs.
+ * `currentDetailsContent` is a LIVE `DerivedProperty` over the model state — the
+ * system period, transit depth/duration, and host-star spectral type —
+ * substituted into a localized pattern. A second pattern covers the
+ * non-transiting case (e.g. when the inclination lifts the planet clear of the
+ * stellar disk), selected from `eclipseInterval.occurs`.
  */
+import { DerivedProperty } from "scenerystack/axon";
 import { ScreenSummaryContent } from "scenerystack/sim";
 import { StringManager } from "../../i18n/StringManager.js";
 import type { TransitModel } from "../model/TransitModel.js";
 
+/** Three significant figures, integerized where possible (e.g. 3.469 → "3.47"). */
+function format3(value: number): string {
+  return Number.isFinite(value) ? String(Number(value.toPrecision(3))) : "—";
+}
+
 export class TransitScreenSummaryContent extends ScreenSummaryContent {
-  // `model` is unused in the scaffold but kept in the signature so real sims can
-  // derive a live currentDetailsContent from it without changing call sites.
-  public constructor(_model: TransitModel) {
+  public constructor(model: TransitModel) {
     const a11y = StringManager.getInstance().getTransitA11yStrings();
+
+    const currentDetails = new DerivedProperty(
+      [
+        model.systemPeriodDaysProperty,
+        model.eclipseIntervalProperty,
+        model.eclipseDurationHoursProperty,
+        model.eclipseDepthProperty,
+        model.starPropertiesProperty,
+        a11y.currentDetailsTransitingPatternStringProperty,
+        a11y.currentDetailsNoTransitPatternStringProperty,
+      ],
+      (period, interval, duration, depth, star, transitingPattern, noTransitPattern) => {
+        const typeLabel = star.spectralType?.label ?? "unknown";
+        if (interval.occurs) {
+          return transitingPattern
+            .replace("{{period}}", format3(period))
+            .replace("{{depth}}", format3(depth))
+            .replace("{{duration}}", format3(duration))
+            .replace("{{type}}", typeLabel);
+        }
+        return noTransitPattern.replace("{{period}}", format3(period)).replace("{{type}}", typeLabel);
+      },
+    );
 
     super({
       playAreaContent: a11y.screenSummary.playAreaStringProperty,
       controlAreaContent: a11y.screenSummary.controlAreaStringProperty,
-      currentDetailsContent: a11y.currentDetailsStringProperty,
+      currentDetailsContent: currentDetails,
       interactionHintContent: a11y.screenSummary.interactionHintStringProperty,
     });
   }

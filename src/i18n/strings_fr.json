@@ -9,92 +9,99 @@
     "mSun": "M<sub>Sun</sub>",
     "rJupiter": "R<sub>Jup</sub>",
     "rSun": "R<sub>Sun</sub>",
-    "au": "AU",
+    "au": "UA",
     "degrees": "°",
     "metersPerSecond": "m/s",
-    "days": "days",
-    "hours": "hours",
+    "days": "jours",
+    "hours": "heures",
     "kelvin": "K"
   },
   "radialVelocity": {
     "controls": {
-      "planetMass": "Planet Mass",
-      "starMass": "Star Mass",
-      "semimajorAxis": "Semimajor Axis",
-      "eccentricity": "Eccentricity",
-      "inclination": "Inclination",
+      "planetMass": "Masse de la planète",
+      "starMass": "Masse de l'étoile",
+      "semimajorAxis": "Demi-grand axe",
+      "eccentricity": "Excentricité",
+      "inclination": "Inclinaison",
       "longitude": "Longitude",
-      "noise": "Noise",
-      "numberOfMeasurements": "Number of Measurements",
-      "animationSpeed": "Animation Speed",
-      "showTheoreticalCurve": "Show Theoretical Curve",
-      "showSimulatedMeasurements": "Show Simulated Measurements",
-      "showMultipleViews": "Show Multiple Views"
+      "noise": "Bruit",
+      "numberOfMeasurements": "Nombre de mesures",
+      "animationSpeed": "Vitesse d'animation",
+      "showTheoreticalCurve": "Afficher la courbe théorique",
+      "showSimulatedMeasurements": "Afficher les mesures simulées",
+      "showMultipleViews": "Afficher plusieurs vues"
     },
     "readouts": {
-      "systemPeriodPattern": "System period: {{value}} days",
-      "amplitudePattern": "Amplitude: {{value}} m/s",
-      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "systemPeriodPattern": "Période du système : {{value}} jours",
+      "amplitudePattern": "Amplitude : {{value}} m/s",
+      "starTypePattern": "Type spectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
     },
     "chart": {
-      "title": "Radial Velocity Curve",
+      "title": "Courbe de vitesse radiale",
       "xAxisLabel": "Phase",
-      "yAxisLabel": "Velocity (m/s)"
+      "yAxisLabel": "Vitesse (m/s)"
     },
     "viewTitles": {
-      "orbitView": "Orbit View",
-      "sideView": "Side View",
-      "earthView": "Earth View",
-      "orbitView3D": "3D Orbit View"
+      "orbitView": "Vue de l'orbite",
+      "sideView": "Vue latérale",
+      "earthView": "Vue de la Terre",
+      "orbitView3D": "Vue de l'orbite 3D"
     }
   },
   "transit": {
     "controls": {
-      "planetMass": "Planet Mass",
-      "planetRadius": "Planet Radius",
-      "starMass": "Star Mass",
-      "semimajorAxis": "Semimajor Axis",
-      "eccentricity": "Eccentricity",
-      "inclination": "Inclination",
+      "planetMass": "Masse de la planète",
+      "planetRadius": "Rayon de la planète",
+      "starMass": "Masse de l'étoile",
+      "semimajorAxis": "Demi-grand axe",
+      "eccentricity": "Excentricité",
+      "inclination": "Inclinaison",
       "longitude": "Longitude",
-      "noise": "Noise",
-      "numberOfMeasurements": "Number of Measurements",
-      "animationSpeed": "Animation Speed",
-      "showTheoreticalCurve": "Show Theoretical Curve",
-      "showSimulatedMeasurements": "Show Simulated Measurements"
+      "noise": "Bruit",
+      "numberOfMeasurements": "Nombre de mesures",
+      "animationSpeed": "Vitesse d'animation",
+      "showTheoreticalCurve": "Afficher la courbe théorique",
+      "showSimulatedMeasurements": "Afficher les mesures simulées"
     },
     "readouts": {
-      "systemPeriodPattern": "System period: {{value}} days",
-      "eclipseDepthPattern": "Eclipse depth: {{value}}",
-      "eclipseDurationPattern": "Eclipse duration: {{value}} hours",
-      "noEclipse": "No eclipse (planet does not transit)",
-      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "systemPeriodPattern": "Période du système : {{value}} jours",
+      "eclipseDepthPattern": "Profondeur de l'éclipse : {{value}}",
+      "eclipseDurationPattern": "Durée de l'éclipse : {{value}} heures",
+      "noEclipse": "Pas d'éclipse (la planète ne transite pas)",
+      "starTypePattern": "Type spectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
     },
     "chart": {
-      "title": "Light Curve",
+      "title": "Courbe de lumière",
       "xAxisLabel": "Phase",
-      "yAxisLabel": "Normalized Flux"
+      "yAxisLabel": "Flux normalisé"
     },
     "viewTitles": {
-      "transitView": "Transit View"
+      "transitView": "Vue du transit"
     }
   },
   "a11y": {
     "radialVelocity": {
       "screenSummary": {
-        "playArea": "La zone de jeu affiche le contenu principal de la simulation.",
-        "controlArea": "La zone de contrôle comporte un bouton Tout réinitialiser qui ramène la simulation à son état initial.",
-        "interactionHint": "Explorez la simulation en interagissant avec ses commandes."
+        "playArea": "La zone de travail affiche la courbe de vitesse radiale en haut et les diagrammes d'orbite (vues latérale, de la Terre, bidimensionnelle et tridimensionnelle) en bas.",
+        "controlArea": "La zone de contrôle possède des curseurs pour les masses de la planète et de l'étoile, la taille de l'orbite, l'excentricité, l'inclinaison et la longitude, ainsi que des commandes de mesure, de vue et d'animation, et un bouton Tout réinitialiser.",
+        "interactionHint": "Faites glisser un curseur ou choisissez un système prédéfini pour voir comment l'oscillation de l'étoile change. Utilisez le bouton Lecture pour animer l'orbite."
       },
-      "currentDetails": "La simulation est dans son état initial."
+      "currentDetailsPattern": "Le système a une période orbitale de {{period}} jours et une amplitude de vitesse radiale de {{amplitude}} mètres par seconde. L'étoile hôte est une étoile de type {{type}}.",
+      "controls": {
+        "preset": "Système prédéfini"
+      }
     },
     "transit": {
       "screenSummary": {
-        "playArea": "La zone de jeu affiche le contenu principal de la simulation.",
-        "controlArea": "La zone de contrôle comporte un bouton Tout réinitialiser qui ramène la simulation à son état initial.",
-        "interactionHint": "Explorez la simulation en interagissant avec ses commandes."
+        "playArea": "La zone de travail affiche la courbe de lumière en haut et un diagramme de la planète passant devant son étoile en bas.",
+        "controlArea": "La zone de contrôle possède des curseurs pour les tailles et masses de la planète et de l'étoile, la taille de l'orbite, l'excentricité, l'inclinaison et la longitude, ainsi que des commandes de mesure, de vue et d'animation, et un bouton Tout réinitialiser.",
+        "interactionHint": "Faites glisser un curseur ou choisissez un système prédéfini pour voir comment la profondeur et la durée du transit changent. Utilisez le bouton Lecture pour animer l'orbite."
       },
-      "currentDetails": "La simulation est dans son état initial."
+      "currentDetailsTransitingPattern": "La planète orbite tous les {{period}} jours. Son transit bloque {{depth}} de la lumière de l'étoile pendant {{duration}} heures. L'étoile hôte est une étoile de type {{type}}.",
+      "currentDetailsNoTransitPattern": "La planète orbite tous les {{period}} jours et ne transite pas son étoile. L'étoile hôte est une étoile de type {{type}}.",
+      "controls": {
+        "preset": "Système prédéfini"
+      }
     }
   },
   "preferences": {

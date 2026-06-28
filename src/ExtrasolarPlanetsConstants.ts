@@ -106,13 +106,14 @@ export const RV_SEMIMAJOR_AXIS_RANGE = new Range(0.01, 10); // AU
 export const RV_SEMIMAJOR_AXIS_DEFAULT = 1;
 
 export const RV_ECCENTRICITY_RANGE = new Range(0, 0.8);
-export const RV_ECCENTRICITY_DEFAULT = 0.2;
+// Default = Option A (preset #1) so the preset combo, model defaults, and Reset all agree.
+export const RV_ECCENTRICITY_DEFAULT = 0;
 
 export const RV_INCLINATION_RANGE = new Range(0, 180); // degrees
 export const RV_INCLINATION_DEFAULT = 90;
 
 export const RV_LONGITUDE_RANGE = new Range(0, 360); // degrees
-export const RV_LONGITUDE_DEFAULT = 45;
+export const RV_LONGITUDE_DEFAULT = 0;
 
 export const RV_NOISE_RANGE = new Range(1, 100); // m/s
 export const RV_NOISE_DEFAULT = 15;
@@ -130,22 +131,23 @@ export const RV_ANIMATION_SPEED_DEFAULT = 0.0005;
 // Transcribed from transitSimulator017 slider records + onResetClicked (DoAction_3).
 
 export const TRANSIT_PLANET_MASS_RANGE = new Range(0.001, 100); // M_jupiter
-export const TRANSIT_PLANET_MASS_DEFAULT = 0.657;
+// Defaults = Option A (preset #1): same Jupiter-at-1-AU baseline as the RV screen.
+export const TRANSIT_PLANET_MASS_DEFAULT = 1;
 
 export const TRANSIT_PLANET_RADIUS_RANGE = new Range(0.01, 2); // R_jupiter
-export const TRANSIT_PLANET_RADIUS_DEFAULT = 1.32;
+export const TRANSIT_PLANET_RADIUS_DEFAULT = 1;
 
 export const TRANSIT_STAR_MASS_RANGE = new Range(0.5, 2); // M_sun
-export const TRANSIT_STAR_MASS_DEFAULT = 1.09;
+export const TRANSIT_STAR_MASS_DEFAULT = 1;
 
 export const TRANSIT_SEMIMAJOR_AXIS_RANGE = new Range(0.015, 2); // AU
-export const TRANSIT_SEMIMAJOR_AXIS_DEFAULT = 0.047;
+export const TRANSIT_SEMIMAJOR_AXIS_DEFAULT = 1;
 
 export const TRANSIT_ECCENTRICITY_RANGE = new Range(0, 0.4);
 export const TRANSIT_ECCENTRICITY_DEFAULT = 0;
 
 export const TRANSIT_INCLINATION_RANGE = new Range(0, 180); // degrees
-export const TRANSIT_INCLINATION_DEFAULT = 86.929;
+export const TRANSIT_INCLINATION_DEFAULT = 90;
 
 export const TRANSIT_LONGITUDE_RANGE = new Range(0, 360); // degrees
 export const TRANSIT_LONGITUDE_DEFAULT = 0;
@@ -173,6 +175,218 @@ export const TRANSIT_NO_MEASUREMENTS_NOISE = 0.00001;
 export const TRANSIT_PLANET_VIEW_RADIUS = 6;
 /** Pixel radius of the star disk in the transit visualization. */
 export const TRANSIT_STAR_VIEW_RADIUS = 38;
+
+// ── Radial Velocity presets (transcribed from radialVelocitySimulator012 DoAction_2.as) ──
+// A preset sets ONLY its six orbital parameters — never noise, number of
+// measurements, animation speed, or phase. The names are proper nouns (planet
+// designations / "Option N") kept verbatim from the Flash ComboBox labels,
+// including the "N. " index prefix; they are intentionally NOT localized.
+
+/** Parameter tuple for one Radial Velocity preset. */
+export type RadialVelocityPreset = {
+  readonly name: string;
+  readonly starMass: number; // M_Sun
+  readonly planetMass: number; // M_Jup
+  readonly eccentricity: number;
+  readonly separation: number; // AU
+  readonly inclination: number; // degrees
+  readonly longitude: number; // degrees
+};
+
+export const RADIAL_VELOCITY_PRESETS: readonly RadialVelocityPreset[] = Object.freeze([
+  { name: "1. Option A", starMass: 1, planetMass: 1, eccentricity: 0, separation: 1, inclination: 90, longitude: 0 },
+  { name: "2. Option B", starMass: 1, planetMass: 1, eccentricity: 0.4, separation: 1, inclination: 90, longitude: 0 },
+  { name: "3. Option C", starMass: 1, planetMass: 0.05, eccentricity: 0, separation: 1, inclination: 90, longitude: 0 },
+  {
+    name: "4. Option D",
+    starMass: 1,
+    planetMass: 0.00315,
+    eccentricity: 0,
+    separation: 1,
+    inclination: 90,
+    longitude: 0,
+  },
+  {
+    name: "5. HD 68988 b",
+    starMass: 1.2,
+    planetMass: 1.9,
+    eccentricity: 0.14,
+    separation: 0.071,
+    inclination: 90,
+    longitude: 40,
+  },
+  {
+    name: "6. HD 33564 b",
+    starMass: 1.25,
+    planetMass: 9.1,
+    eccentricity: 0.34,
+    separation: 1.1,
+    inclination: 90,
+    longitude: 205,
+  },
+  {
+    name: "7. HD 39091 b",
+    starMass: 1.1,
+    planetMass: 10.35,
+    eccentricity: 0.62,
+    separation: 3.29,
+    inclination: 90,
+    longitude: 331,
+  },
+]);
+
+/**
+ * Option A — the starting preset and the model's reset target. Defined with a
+ * `??` fallback (not a non-null assertion) so the type is `RadialVelocityPreset`
+ * with no `undefined`, and stays valid even if the array is emptied.
+ */
+export const RADIAL_VELOCITY_DEFAULT_PRESET: RadialVelocityPreset = RADIAL_VELOCITY_PRESETS[0] ?? {
+  name: "1. Option A",
+  starMass: 1,
+  planetMass: 1,
+  eccentricity: 0,
+  separation: 1,
+  inclination: 90,
+  longitude: 0,
+};
+
+// ── Transit presets (transcribed from transitSimulator017 DoAction_2.as) ────────────────
+/** Parameter tuple for one Transit preset. */
+export type TransitPreset = {
+  readonly name: string;
+  readonly planetMass: number; // M_Jup
+  readonly planetRadius: number; // R_Jup
+  readonly starMass: number; // M_Sun
+  readonly separation: number; // AU
+  readonly eccentricity: number;
+  readonly inclination: number; // degrees
+  readonly longitude: number; // degrees
+};
+
+export const TRANSIT_PRESETS: readonly TransitPreset[] = Object.freeze([
+  {
+    name: "1. Option A",
+    planetMass: 1,
+    planetRadius: 1,
+    starMass: 1,
+    separation: 1,
+    eccentricity: 0,
+    inclination: 90,
+    longitude: 0,
+  },
+  {
+    name: "2. Option B",
+    planetMass: 0.0032,
+    planetRadius: 0.09,
+    starMass: 1,
+    separation: 1,
+    eccentricity: 0,
+    inclination: 90,
+    longitude: 0,
+  },
+  {
+    name: "3. OGLE-TR-113 b",
+    planetMass: 1.32,
+    planetRadius: 1.09,
+    starMass: 0.78,
+    separation: 0.0229,
+    eccentricity: 0,
+    inclination: 89.4,
+    longitude: 0,
+  },
+  {
+    name: "4. TrES-1",
+    planetMass: 0.61,
+    planetRadius: 1.08,
+    starMass: 0.87,
+    separation: 0.0393,
+    eccentricity: 0.135,
+    inclination: 88.2,
+    longitude: 0,
+  },
+  {
+    name: "5. XO-1 b",
+    planetMass: 0.9,
+    planetRadius: 1.3,
+    starMass: 1,
+    separation: 0.0488,
+    eccentricity: 0,
+    inclination: 87.7,
+    longitude: 0,
+  },
+  {
+    name: "6. HD 209458 b",
+    planetMass: 0.69,
+    planetRadius: 1.32,
+    starMass: 1.01,
+    separation: 0.045,
+    eccentricity: 0.07,
+    inclination: 86.929,
+    longitude: 83,
+  },
+  {
+    name: "7. OGLE-TR-111 b",
+    planetMass: 0.53,
+    planetRadius: 1,
+    starMass: 0.82,
+    separation: 0.047,
+    eccentricity: 0,
+    inclination: 86.5,
+    longitude: 0,
+  },
+  {
+    name: "8. OGLE-TR-10 b",
+    planetMass: 0.54,
+    planetRadius: 1.16,
+    starMass: 1.22,
+    separation: 0.04162,
+    eccentricity: 0,
+    inclination: 86.46,
+    longitude: 0,
+  },
+  {
+    name: "9. HD 189733 b",
+    planetMass: 1.15,
+    planetRadius: 1.154,
+    starMass: 0.82,
+    separation: 0.0313,
+    eccentricity: 0,
+    inclination: 85.79,
+    longitude: 0,
+  },
+  {
+    name: "10. HD 149026 b",
+    planetMass: 0.36,
+    planetRadius: 0.725,
+    starMass: 1.3,
+    separation: 0.042,
+    eccentricity: 0,
+    inclination: 85.3,
+    longitude: 0,
+  },
+  {
+    name: "11. OGLE-TR-132 b",
+    planetMass: 1.19,
+    planetRadius: 1.13,
+    starMass: 1.35,
+    separation: 0.0306,
+    eccentricity: 0,
+    inclination: 85,
+    longitude: 0,
+  },
+]);
+
+/** Option A — the starting preset and the model's reset target (see RV note). */
+export const TRANSIT_DEFAULT_PRESET: TransitPreset = TRANSIT_PRESETS[0] ?? {
+  name: "1. Option A",
+  planetMass: 1,
+  planetRadius: 1,
+  starMass: 1,
+  separation: 1,
+  eccentricity: 0,
+  inclination: 90,
+  longitude: 0,
+};
 
 ExtrasolarPlanetsNamespace.register("ExtrasolarPlanetsConstants", {
   SCREEN_VIEW_MARGIN,

@@ -9,8 +9,8 @@
  */
 
 import { DerivedProperty, PatternStringProperty, type TReadOnlyProperty } from "scenerystack/axon";
-import { type Node, RichText, VBox } from "scenerystack/scenery";
-import { Checkbox } from "scenerystack/sun";
+import { type Node, RichText, Text, VBox } from "scenerystack/scenery";
+import { Checkbox, ComboBox, type ComboBoxItem } from "scenerystack/sun";
 import { ExtrasolarPlanetsPanel } from "../../common/ExtrasolarPlanetsPanel.js";
 import { createNumberControl } from "../../common/view/createNumberControl.js";
 import { StarPropertiesNode } from "../../common/view/StarPropertiesNode.js";
@@ -24,8 +24,10 @@ import {
   TRANSIT_NUMBER_OF_MEASUREMENTS_RANGE,
   TRANSIT_PLANET_MASS_RANGE,
   TRANSIT_PLANET_RADIUS_RANGE,
+  TRANSIT_PRESETS,
   TRANSIT_SEMIMAJOR_AXIS_RANGE,
   TRANSIT_STAR_MASS_RANGE,
+  type TransitPreset,
 } from "../../ExtrasolarPlanetsConstants.js";
 import { StringManager } from "../../i18n/StringManager.js";
 import type { TransitModel } from "../model/TransitModel.js";
@@ -42,10 +44,24 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
   /** The interactive nodes, in tab order, for the ScreenView's pdomOrder. */
   public readonly controlsInOrder: Node[];
 
-  public constructor(model: TransitModel) {
+  public constructor(model: TransitModel, listParent: Node) {
     const strings = StringManager.getInstance().getTransitStrings();
     const units = StringManager.getInstance().getUnits();
     const controls = strings.controls;
+    const a11yStrings = StringManager.getInstance().getTransitA11yStrings();
+
+    // ── Preset combo box (selects a whole parameter set) ────────────────────────
+    const presetItems: ComboBoxItem<TransitPreset>[] = TRANSIT_PRESETS.map((preset) => ({
+      value: preset,
+      createNode: () =>
+        new Text(preset.name, { font: "13px sans-serif", fill: ExtrasolarPlanetsColors.textColorProperty }),
+      accessibleName: preset.name,
+    }));
+    const presetComboBox = new ComboBox(model.presetProperty, presetItems, listParent, {
+      accessibleName: a11yStrings.controls.presetStringProperty,
+      xMargin: 8,
+      listPosition: "below",
+    });
 
     const planetMassControl = createNumberControl(
       controls.planetMassStringProperty,
@@ -161,6 +177,7 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
       align: "left",
       spacing: 8,
       children: [
+        presetComboBox,
         planetMassControl,
         planetRadiusControl,
         starMassControl,
@@ -183,6 +200,7 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
     super(content);
 
     this.controlsInOrder = [
+      presetComboBox,
       planetMassControl,
       planetRadiusControl,
       starMassControl,

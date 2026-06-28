@@ -33,6 +33,7 @@ import {
   SECONDS_PER_DAY,
   TRANSIT_ANIMATION_SPEED_DEFAULT,
   TRANSIT_ANIMATION_SPEED_RANGE,
+  TRANSIT_DEFAULT_PRESET,
   TRANSIT_ECCENTRICITY_DEFAULT,
   TRANSIT_ECCENTRICITY_RANGE,
   TRANSIT_INCLINATION_DEFAULT,
@@ -54,6 +55,7 @@ import {
   TRANSIT_SEMIMAJOR_AXIS_RANGE,
   TRANSIT_STAR_MASS_DEFAULT,
   TRANSIT_STAR_MASS_RANGE,
+  type TransitPreset,
 } from "../../ExtrasolarPlanetsConstants.js";
 import {
   type EclipseInterval,
@@ -85,6 +87,14 @@ export class TransitModel implements TModel {
     range: TRANSIT_INCLINATION_RANGE,
   }); // degrees
   public readonly longitudeProperty = new NumberProperty(TRANSIT_LONGITUDE_DEFAULT, { range: TRANSIT_LONGITUDE_RANGE }); // degrees
+
+  /**
+   * The currently-selected preset (drives the preset ComboBox). Initialized to
+   * Option A, whose tuple matches the NumberProperty defaults above, so the
+   * combo, the slider values, and Reset all agree. Dragging a slider does NOT
+   * clear the selection (standard PhET behaviour).
+   */
+  public readonly presetProperty = new Property<TransitPreset>(TRANSIT_DEFAULT_PRESET);
 
   // ── Measurement controls ──────────────────────────────────────────────────────
   public readonly noiseProperty = new NumberProperty(TRANSIT_NOISE_DEFAULT, { range: TRANSIT_NOISE_RANGE });
@@ -191,6 +201,24 @@ export class TransitModel implements TModel {
     Multilink.multilink([this.transitSystemProperty, this.noiseProperty, this.numberOfMeasurementsProperty], () =>
       this.regenerateMeasurements(),
     );
+
+    // ── Preset selection ────────────────────────────────────────────────────────
+    // lazyLink so the initial Option A (== the NumberProperty defaults) is a no-op.
+    this.presetProperty.lazyLink((preset) => this.applyPreset(preset));
+  }
+
+  /**
+   * Applies a preset's seven orbital/planet parameters (never noise, number of
+   * measurements, animation speed, or phase — plan.md §2).
+   */
+  public applyPreset(preset: TransitPreset): void {
+    this.planetMassProperty.value = preset.planetMass;
+    this.planetRadiusProperty.value = preset.planetRadius;
+    this.starMassProperty.value = preset.starMass;
+    this.semimajorAxisProperty.value = preset.separation;
+    this.eccentricityProperty.value = preset.eccentricity;
+    this.inclinationProperty.value = preset.inclination;
+    this.longitudeProperty.value = preset.longitude;
   }
 
   /**
@@ -239,6 +267,7 @@ export class TransitModel implements TModel {
     this.showSimulatedMeasurementsProperty.reset();
     this.phaseProperty.reset();
     this.animationSpeedProperty.reset();
+    this.presetProperty.reset();
     this.timer.reset();
   }
 }

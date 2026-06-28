@@ -35,6 +35,8 @@ import {
   AU_M,
   CHART_CURVE_SAMPLES,
   M_SUN_KG,
+  RADIAL_VELOCITY_DEFAULT_PRESET,
+  type RadialVelocityPreset,
   RV_ANIMATION_SPEED_DEFAULT,
   RV_ANIMATION_SPEED_RANGE,
   RV_ECCENTRICITY_DEFAULT,
@@ -72,6 +74,15 @@ export class RadialVelocityModel implements TModel {
   public readonly eccentricityProperty = new NumberProperty(RV_ECCENTRICITY_DEFAULT, { range: RV_ECCENTRICITY_RANGE });
   public readonly inclinationProperty = new NumberProperty(RV_INCLINATION_DEFAULT, { range: RV_INCLINATION_RANGE }); // degrees
   public readonly longitudeProperty = new NumberProperty(RV_LONGITUDE_DEFAULT, { range: RV_LONGITUDE_RANGE }); // degrees
+
+  /**
+   * The currently-selected preset (drives the preset ComboBox). Initialized to
+   * Option A, whose tuple matches the NumberProperty defaults above, so the
+   * combo, the slider values, and Reset all agree. Dragging a slider does NOT
+   * clear the selection (standard PhET behaviour) — the combo still names the
+   * last-chosen preset.
+   */
+  public readonly presetProperty = new Property<RadialVelocityPreset>(RADIAL_VELOCITY_DEFAULT_PRESET);
 
   // ── Measurement controls ──────────────────────────────────────────────────────
   public readonly noiseProperty = new NumberProperty(RV_NOISE_DEFAULT, { range: RV_NOISE_RANGE }); // m/s
@@ -187,6 +198,24 @@ export class RadialVelocityModel implements TModel {
       ],
       () => this.regenerateMeasurements(),
     );
+
+    // ── Preset selection ────────────────────────────────────────────────────────
+    // lazyLink (not link) so applying the initial Option A on construction is a
+    // no-op — its tuple already matches the NumberProperty defaults.
+    this.presetProperty.lazyLink((preset) => this.applyPreset(preset));
+  }
+
+  /**
+   * Applies a preset's six orbital parameters (never noise, number of
+   * measurements, animation speed, or phase — plan.md §2).
+   */
+  public applyPreset(preset: RadialVelocityPreset): void {
+    this.starMassProperty.value = preset.starMass;
+    this.planetMassProperty.value = preset.planetMass;
+    this.eccentricityProperty.value = preset.eccentricity;
+    this.semimajorAxisProperty.value = preset.separation;
+    this.inclinationProperty.value = preset.inclination;
+    this.longitudeProperty.value = preset.longitude;
   }
 
   /**
@@ -240,6 +269,7 @@ export class RadialVelocityModel implements TModel {
     this.showMultipleViewsProperty.reset();
     this.phaseProperty.reset();
     this.animationSpeedProperty.reset();
+    this.presetProperty.reset();
     this.timer.reset();
   }
 }

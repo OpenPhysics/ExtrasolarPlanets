@@ -82,19 +82,26 @@
   "a11y": {
     "radialVelocity": {
       "screenSummary": {
-        "playArea": "The play area shows the main simulation content.",
-        "controlArea": "The control area has a Reset All button that returns the simulation to its starting state.",
-        "interactionHint": "Explore the simulation by interacting with its controls."
+        "playArea": "The play area shows the radial-velocity curve above and orbit diagrams (side, earth, two-dimensional, and three-dimensional views) below.",
+        "controlArea": "The control area has sliders for the planet and star masses, orbit size, eccentricity, inclination, and longitude, plus measurement, view, and animation controls, and a Reset All button.",
+        "interactionHint": "Drag a slider or choose a system preset to see how the star's wobble changes. Use the Play button to animate the orbit."
       },
-      "currentDetails": "The simulation is in its initial state."
+      "currentDetailsPattern": "The system has an orbital period of {{period}} days and a radial-velocity amplitude of {{amplitude}} meters per second. The host star is a {{type}} star.",
+      "controls": {
+        "preset": "System preset"
+      }
     },
     "transit": {
       "screenSummary": {
-        "playArea": "The play area shows the main simulation content.",
-        "controlArea": "The control area has a Reset All button that returns the simulation to its starting state.",
-        "interactionHint": "Explore the simulation by interacting with its controls."
+        "playArea": "The play area shows the light curve above and a diagram of the planet crossing its star below.",
+        "controlArea": "The control area has sliders for the planet and star sizes and masses, orbit size, eccentricity, inclination, and longitude, plus measurement, view, and animation controls, and a Reset All button.",
+        "interactionHint": "Drag a slider or choose a system preset to see how the transit depth and duration change. Use the Play button to animate the orbit."
       },
-      "currentDetails": "The simulation is in its initial state."
+      "currentDetailsTransitingPattern": "The planet orbits every {{period}} days. Its transit blocks {{depth}} of the star's light for {{duration}} hours. The host star is a {{type}} star.",
+      "currentDetailsNoTransitPattern": "The planet orbits every {{period}} days and does not transit its star. The host star is a {{type}} star.",
+      "controls": {
+        "preset": "System preset"
+      }
     }
   },
   "preferences": {

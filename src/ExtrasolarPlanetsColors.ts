@@ -105,6 +105,12 @@ const ExtrasolarPlanetsColors = {
     projector: "#c43c00",
   }),
 
+  /** Color of the transit eclipse-duration arrow drawn across the light curve. */
+  durationArrowColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "durationArrow", {
+    default: "#ff8a65",
+    projector: "#b71c1c",
+  }),
+
   /** Host-star disk in the orbit/transit visualizations. */
   starColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "star", {
     default: "#ffd54f",
