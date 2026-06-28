@@ -9,7 +9,7 @@
  */
 
 import { DerivedProperty, PatternStringProperty, type TReadOnlyProperty } from "scenerystack/axon";
-import { type Node, RichText, Text, VBox } from "scenerystack/scenery";
+import { HBox, type Node, RichText, Text, VBox } from "scenerystack/scenery";
 import { Checkbox, ComboBox, type ComboBoxItem } from "scenerystack/sun";
 import { ExtrasolarPlanetsPanel } from "../../common/ExtrasolarPlanetsPanel.js";
 import { createNumberControl } from "../../common/view/createNumberControl.js";
@@ -153,8 +153,8 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
     const readoutText = (stringProperty: TReadOnlyProperty<string>): RichText =>
       new RichText(stringProperty, {
         fill: ExtrasolarPlanetsColors.textColorProperty,
-        font: "13px sans-serif",
-        maxWidth: 260,
+        font: "12px sans-serif",
+        maxWidth: 170,
       });
 
     const periodReadout = readoutText(
@@ -173,28 +173,50 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
       }),
     );
 
+    // ── Grouped columns: presets / planet / orbit / star / measurements ─────────
+    // The controls are arranged side by side along the bottom of the screen
+    // (matching the NAAP Flash layout) rather than in one tall panel.
+    const groups = strings.groups;
+    const groupTitle = (titleProperty: TReadOnlyProperty<string>): Text =>
+      new Text(titleProperty, { font: "bold 11px sans-serif", fill: ExtrasolarPlanetsColors.textColorProperty });
+    const makeGroup = (titleProperty: TReadOnlyProperty<string>, children: Node[]): VBox =>
+      new VBox({ align: "left", spacing: 7, children: [groupTitle(titleProperty), ...children] });
+
+    const presetGroup = makeGroup(groups.presetStringProperty, [presetComboBox, animationSpeedControl]);
+    const planetGroup = makeGroup(groups.planetStringProperty, [
+      planetMassControl,
+      planetRadiusControl,
+      eccentricityControl,
+    ]);
+    const orbitGroup = makeGroup(groups.orbitStringProperty, [
+      semimajorAxisControl,
+      inclinationControl,
+      longitudeControl,
+    ]);
+    const starGroup = makeGroup(groups.starStringProperty, [
+      starMassControl,
+      periodReadout,
+      eclipseDepthReadout,
+      eclipseDurationReadout,
+    ]);
+    const measurementsGroup = makeGroup(groups.measurementsStringProperty, [
+      noiseControl,
+      numberControl,
+      showCurveCheckbox,
+      showMeasurementsCheckbox,
+    ]);
+
+    const columns = new HBox({
+      spacing: 18,
+      align: "top",
+      children: [presetGroup, planetGroup, orbitGroup, starGroup, measurementsGroup],
+    });
+
+    // The star-properties sentence spans the full panel width beneath the columns.
     const content = new VBox({
       align: "left",
       spacing: 8,
-      children: [
-        presetComboBox,
-        planetMassControl,
-        planetRadiusControl,
-        starMassControl,
-        semimajorAxisControl,
-        eccentricityControl,
-        inclinationControl,
-        longitudeControl,
-        noiseControl,
-        numberControl,
-        animationSpeedControl,
-        showCurveCheckbox,
-        showMeasurementsCheckbox,
-        starPropertiesNode,
-        periodReadout,
-        eclipseDepthReadout,
-        eclipseDurationReadout,
-      ],
+      children: [columns, starPropertiesNode],
     });
 
     super(content);
@@ -203,11 +225,11 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
       presetComboBox,
       planetMassControl,
       planetRadiusControl,
-      starMassControl,
-      semimajorAxisControl,
       eccentricityControl,
+      semimajorAxisControl,
       inclinationControl,
       longitudeControl,
+      starMassControl,
       noiseControl,
       numberControl,
       animationSpeedControl,

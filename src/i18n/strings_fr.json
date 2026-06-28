@@ -31,10 +31,17 @@
       "showSimulatedMeasurements": "Afficher les mesures simulées",
       "showMultipleViews": "Afficher plusieurs vues"
     },
+    "groups": {
+      "preset": "Systèmes prédéfinis",
+      "planet": "Planète",
+      "orbit": "Orbite",
+      "star": "Étoile",
+      "measurements": "Mesures"
+    },
     "readouts": {
       "systemPeriodPattern": "Période du système : {{value}} jours",
       "amplitudePattern": "Amplitude : {{value}} m/s",
-      "starTypePattern": "Type spectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(une étoile de la séquence principale de cette masse aurait un type spectral {{type}}, une température de {{temperature}} K et un rayon de {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Courbe de vitesse radiale",
@@ -63,12 +70,19 @@
       "showTheoreticalCurve": "Afficher la courbe théorique",
       "showSimulatedMeasurements": "Afficher les mesures simulées"
     },
+    "groups": {
+      "preset": "Systèmes prédéfinis",
+      "planet": "Planète",
+      "orbit": "Orbite",
+      "star": "Étoile",
+      "measurements": "Mesures"
+    },
     "readouts": {
       "systemPeriodPattern": "Période du système : {{value}} jours",
       "eclipseDepthPattern": "Profondeur de l'éclipse : {{value}}",
       "eclipseDurationPattern": "Durée de l'éclipse : {{value}} heures",
       "noEclipse": "Pas d'éclipse (la planète ne transite pas)",
-      "starTypePattern": "Type spectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(une étoile de la séquence principale de cette masse aurait un type spectral {{type}}, une température de {{temperature}} K et un rayon de {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Courbe de lumière",

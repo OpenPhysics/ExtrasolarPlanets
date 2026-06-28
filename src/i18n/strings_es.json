@@ -31,10 +31,17 @@
       "showSimulatedMeasurements": "Mostrar mediciones simuladas",
       "showMultipleViews": "Mostrar múltiples vistas"
     },
+    "groups": {
+      "preset": "Sistemas predefinidos",
+      "planet": "Planeta",
+      "orbit": "Órbita",
+      "star": "Estrella",
+      "measurements": "Mediciones"
+    },
     "readouts": {
       "systemPeriodPattern": "Periodo del sistema: {{value}} días",
       "amplitudePattern": "Amplitud: {{value}} m/s",
-      "starTypePattern": "Tipo espectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(una estrella de la secuencia principal de esta masa tendría tipo espectral {{type}}, temperatura {{temperature}} K y radio {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Curva de velocidad radial",
@@ -63,12 +70,19 @@
       "showTheoreticalCurve": "Mostrar curva teórica",
       "showSimulatedMeasurements": "Mostrar mediciones simuladas"
     },
+    "groups": {
+      "preset": "Sistemas predefinidos",
+      "planet": "Planeta",
+      "orbit": "Órbita",
+      "star": "Estrella",
+      "measurements": "Mediciones"
+    },
     "readouts": {
       "systemPeriodPattern": "Periodo del sistema: {{value}} días",
       "eclipseDepthPattern": "Profundidad del eclipse: {{value}}",
       "eclipseDurationPattern": "Duración del eclipse: {{value}} horas",
       "noEclipse": "Sin eclipse (el planeta no transita)",
-      "starTypePattern": "Tipo espectral {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(una estrella de la secuencia principal de esta masa tendría tipo espectral {{type}}, temperatura {{temperature}} K y radio {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Curva de luz",

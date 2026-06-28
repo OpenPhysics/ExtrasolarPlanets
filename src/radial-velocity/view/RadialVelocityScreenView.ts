@@ -3,12 +3,14 @@
  *
  * The top-level view for the Radial Velocity screen.
  *
- * Layout (within layoutBounds 1024×618):
- *   - chart (top-left)
- *   - orbit views (below the chart; toggles between a single 2-D orbit view and
- *     a 2×2 grid of side / earth / 2-D / 3-D perspectives)
- *   - control panel (top-right)
- *   - time control (play/pause/step, centered below the orbit views)
+ * Layout (within layoutBounds 1024×618) — arranged to mirror the NAAP Flash
+ * simulator:
+ *   - orbit views (top-left; a single 2-D orbit, or a 2×2 grid of side / earth /
+ *     2-D / 3-D perspectives when "show multiple views" is on)
+ *   - radial-velocity chart (top-right)
+ *   - grouped control panel (bottom, spanning the width: presets / planet / orbit
+ *     / star / measurements)
+ *   - time control (play/pause/step, beneath the orbit views)
  *   - Reset All button (bottom-right)
  *
  * step(dt) forwards to the model so the orbital phase advances while playing,
@@ -49,35 +51,38 @@ export class RadialVelocityScreenView extends ScreenView {
     // but added as the LAST child so its dropdown overlays every panel.
     const comboBoxListParent = new Node();
 
-    // ── Chart ───────────────────────────────────────────────────────────────────
+    // ── Top row: visualization (left) + chart (right) ───────────────────────────
+    // Matches the NAAP Flash arrangement: the orbit views sit on the left and the
+    // radial-velocity plot on the right, side by side at the top of the screen.
     const chartNode = new RadialVelocityChartNode(model);
-    chartNode.left = SCREEN_VIEW_MARGIN;
-    chartNode.top = SCREEN_VIEW_MARGIN;
-    this.addChild(chartNode);
+    const vizSize = chartNode.height; // square orbit views, sized to the chart height
+    const topGap = 18;
+    const topRowWidth = vizSize + topGap + chartNode.width;
+    const topRowLeft = (this.layoutBounds.width - topRowWidth) / 2;
+    const topY = SCREEN_VIEW_MARGIN;
 
-    // ── Orbit views (below the chart) ───────────────────────────────────────────
-    const vizTop = chartNode.bottom + SCREEN_VIEW_MARGIN;
-    // Reserve a strip at the bottom for the time control + Reset All.
-    const timeControlStripHeight = 70;
-    const vizBottom = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN - timeControlStripHeight;
-    const orbitViewsWidth = chartNode.width;
-    const orbitViewsHeight = Math.max(120, vizBottom - vizTop);
-    const orbitViews = new OrbitViewsNode(model, orbitViewsWidth, orbitViewsHeight);
-    orbitViews.left = SCREEN_VIEW_MARGIN;
-    orbitViews.top = vizTop;
+    const orbitViews = new OrbitViewsNode(model, vizSize, vizSize);
+    orbitViews.left = topRowLeft;
+    orbitViews.top = topY;
     this.addChild(orbitViews);
 
-    // ── Control panel ───────────────────────────────────────────────────────────
+    chartNode.left = topRowLeft + vizSize + topGap;
+    chartNode.top = topY;
+    this.addChild(chartNode);
+
+    // ── Bottom: grouped control panel spanning the screen width ─────────────────
     const controlPanel = new RadialVelocityControlPanel(model, comboBoxListParent);
-    const availableHeight = this.layoutBounds.height - 2 * SCREEN_VIEW_MARGIN;
-    if (controlPanel.height > availableHeight) {
-      controlPanel.setScaleMagnitude(availableHeight / controlPanel.height);
-    }
-    controlPanel.top = SCREEN_VIEW_MARGIN;
-    controlPanel.right = this.layoutBounds.maxX - SCREEN_VIEW_MARGIN;
+    const bottomStripHeight = 44; // room for the time control + Reset All below
+    const panelTop = orbitViews.bottom + 10;
+    const panelMaxHeight = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN - bottomStripHeight - panelTop;
+    const panelMaxWidth = this.layoutBounds.width - 2 * SCREEN_VIEW_MARGIN;
+    const panelScale = Math.min(1, panelMaxWidth / controlPanel.width, panelMaxHeight / controlPanel.height);
+    controlPanel.setScaleMagnitude(panelScale);
+    controlPanel.centerX = this.layoutBounds.centerX;
+    controlPanel.top = panelTop;
     this.addChild(controlPanel);
 
-    // ── Time control (play/pause/step) ──────────────────────────────────────────
+    // ── Time control (play/pause/step) — beneath the visualization ──────────────
     const timeControlNode = new TimeControlNode(model.timer.isPlayingProperty, {
       tandem: this.tandem.createTandem("timeControlNode"),
       playPauseStepButtonOptions: {
@@ -86,7 +91,7 @@ export class RadialVelocityScreenView extends ScreenView {
         },
       },
     });
-    timeControlNode.centerX = orbitViews.left + orbitViewsWidth / 2;
+    timeControlNode.centerX = orbitViews.centerX;
     timeControlNode.bottom = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN;
     this.addChild(timeControlNode);
 

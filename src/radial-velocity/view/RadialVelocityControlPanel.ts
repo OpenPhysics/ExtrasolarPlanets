@@ -7,8 +7,8 @@
  * time control arrive in later milestones.
  */
 
-import { DerivedProperty, PatternStringProperty } from "scenerystack/axon";
-import { type Node, RichText, Text, VBox } from "scenerystack/scenery";
+import { DerivedProperty, PatternStringProperty, type TReadOnlyProperty } from "scenerystack/axon";
+import { HBox, type Node, RichText, Text, VBox } from "scenerystack/scenery";
 import { Checkbox, ComboBox, type ComboBoxItem } from "scenerystack/sun";
 import { ExtrasolarPlanetsPanel } from "../../common/ExtrasolarPlanetsPanel.js";
 import { createNumberControl } from "../../common/view/createNumberControl.js";
@@ -148,36 +148,51 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
       new PatternStringProperty(strings.readouts.systemPeriodPatternStringProperty, {
         value: new DerivedProperty([model.periodDaysProperty], format3),
       }),
-      { fill: ExtrasolarPlanetsColors.textColorProperty, font: "13px sans-serif", maxWidth: 260 },
+      { fill: ExtrasolarPlanetsColors.textColorProperty, font: "12px sans-serif", maxWidth: 170 },
     );
     const amplitudeReadout = new RichText(
       new PatternStringProperty(strings.readouts.amplitudePatternStringProperty, {
         value: new DerivedProperty([model.amplitudeProperty], format3),
       }),
-      { fill: ExtrasolarPlanetsColors.textColorProperty, font: "13px sans-serif", maxWidth: 260 },
+      { fill: ExtrasolarPlanetsColors.textColorProperty, font: "12px sans-serif", maxWidth: 170 },
     );
 
+    // ── Grouped columns: presets / planet / orbit / star / measurements ─────────
+    // The controls are arranged side by side along the bottom of the screen
+    // (matching the NAAP Flash layout) rather than in one tall panel.
+    const groups = strings.groups;
+    const groupTitle = (titleProperty: TReadOnlyProperty<string>): Text =>
+      new Text(titleProperty, { font: "bold 11px sans-serif", fill: ExtrasolarPlanetsColors.textColorProperty });
+    const makeGroup = (titleProperty: TReadOnlyProperty<string>, children: Node[]): VBox =>
+      new VBox({ align: "left", spacing: 7, children: [groupTitle(titleProperty), ...children] });
+
+    const presetGroup = makeGroup(groups.presetStringProperty, [presetComboBox, animationSpeedControl]);
+    const planetGroup = makeGroup(groups.planetStringProperty, [planetMassControl, eccentricityControl]);
+    const orbitGroup = makeGroup(groups.orbitStringProperty, [
+      semimajorAxisControl,
+      inclinationControl,
+      longitudeControl,
+    ]);
+    const starGroup = makeGroup(groups.starStringProperty, [starMassControl, periodReadout, amplitudeReadout]);
+    const measurementsGroup = makeGroup(groups.measurementsStringProperty, [
+      noiseControl,
+      numberControl,
+      showCurveCheckbox,
+      showMeasurementsCheckbox,
+      showViewsCheckbox,
+    ]);
+
+    const columns = new HBox({
+      spacing: 18,
+      align: "top",
+      children: [presetGroup, planetGroup, orbitGroup, starGroup, measurementsGroup],
+    });
+
+    // The star-properties sentence spans the full panel width beneath the columns.
     const content = new VBox({
       align: "left",
       spacing: 8,
-      children: [
-        presetComboBox,
-        planetMassControl,
-        semimajorAxisControl,
-        eccentricityControl,
-        starMassControl,
-        inclinationControl,
-        longitudeControl,
-        noiseControl,
-        numberControl,
-        animationSpeedControl,
-        showCurveCheckbox,
-        showMeasurementsCheckbox,
-        showViewsCheckbox,
-        starPropertiesNode,
-        periodReadout,
-        amplitudeReadout,
-      ],
+      children: [columns, starPropertiesNode],
     });
 
     super(content);
@@ -185,11 +200,11 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
     this.controlsInOrder = [
       presetComboBox,
       planetMassControl,
-      semimajorAxisControl,
       eccentricityControl,
-      starMassControl,
+      semimajorAxisControl,
       inclinationControl,
       longitudeControl,
+      starMassControl,
       noiseControl,
       numberControl,
       animationSpeedControl,

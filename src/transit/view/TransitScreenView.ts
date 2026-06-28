@@ -3,11 +3,13 @@
  *
  * The top-level view for the Transit screen.
  *
- * Layout (within layoutBounds 1024×618):
- *   - chart (top-left)
- *   - transit visualization (below the chart; the star disk + transiting planet)
- *   - control panel (top-right)
- *   - time control (play/pause/step, centered below the visualization)
+ * Layout (within layoutBounds 1024×618) — arranged to mirror the NAAP Flash
+ * simulator:
+ *   - transit visualization (top-left; the star disk + transiting planet)
+ *   - light-curve chart (top-right)
+ *   - grouped control panel (bottom, spanning the width: presets / planet / orbit
+ *     / star / measurements)
+ *   - time control (play/pause/step, beneath the visualization)
  *   - Reset All button (bottom-right)
  *
  * step(dt) forwards to the model so the orbital phase advances while playing,
@@ -47,33 +49,38 @@ export class TransitScreenView extends ScreenView {
     // but added as the LAST child so its dropdown overlays every panel.
     const comboBoxListParent = new Node();
 
-    // ── Chart ───────────────────────────────────────────────────────────────────
+    // ── Top row: visualization (left) + chart (right) ───────────────────────────
+    // Matches the NAAP Flash arrangement: the sky-plane transit view sits on the
+    // left and the light-curve plot on the right, side by side at the top.
     const chartNode = new TransitChartNode(model);
-    chartNode.left = SCREEN_VIEW_MARGIN;
-    chartNode.top = SCREEN_VIEW_MARGIN;
-    this.addChild(chartNode);
+    const vizSize = chartNode.height; // square visualization, sized to the chart height
+    const topGap = 18;
+    const topRowWidth = vizSize + topGap + chartNode.width;
+    const topRowLeft = (this.layoutBounds.width - topRowWidth) / 2;
+    const topY = SCREEN_VIEW_MARGIN;
 
-    // ── Transit visualization (below the chart) ─────────────────────────────────
-    const vizTop = chartNode.bottom + SCREEN_VIEW_MARGIN;
-    const timeControlStripHeight = 70;
-    const vizBottom = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN - timeControlStripHeight;
-    const vizSize = Math.max(120, Math.min(chartNode.width, vizBottom - vizTop));
     const transitViz = new TransitVisualizationNode(model, vizSize);
-    transitViz.left = SCREEN_VIEW_MARGIN;
-    transitViz.top = vizTop;
+    transitViz.left = topRowLeft;
+    transitViz.top = topY;
     this.addChild(transitViz);
 
-    // ── Control panel ───────────────────────────────────────────────────────────
+    chartNode.left = topRowLeft + vizSize + topGap;
+    chartNode.top = topY;
+    this.addChild(chartNode);
+
+    // ── Bottom: grouped control panel spanning the screen width ─────────────────
     const controlPanel = new TransitControlPanel(model, comboBoxListParent);
-    const availableHeight = this.layoutBounds.height - 2 * SCREEN_VIEW_MARGIN;
-    if (controlPanel.height > availableHeight) {
-      controlPanel.setScaleMagnitude(availableHeight / controlPanel.height);
-    }
-    controlPanel.top = SCREEN_VIEW_MARGIN;
-    controlPanel.right = this.layoutBounds.maxX - SCREEN_VIEW_MARGIN;
+    const bottomStripHeight = 44; // room for the time control + Reset All below
+    const panelTop = transitViz.bottom + 10;
+    const panelMaxHeight = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN - bottomStripHeight - panelTop;
+    const panelMaxWidth = this.layoutBounds.width - 2 * SCREEN_VIEW_MARGIN;
+    const panelScale = Math.min(1, panelMaxWidth / controlPanel.width, panelMaxHeight / controlPanel.height);
+    controlPanel.setScaleMagnitude(panelScale);
+    controlPanel.centerX = this.layoutBounds.centerX;
+    controlPanel.top = panelTop;
     this.addChild(controlPanel);
 
-    // ── Time control (play/pause/step) ──────────────────────────────────────────
+    // ── Time control (play/pause/step) — beneath the visualization ──────────────
     const timeControlNode = new TimeControlNode(model.timer.isPlayingProperty, {
       tandem: this.tandem.createTandem("timeControlNode"),
       playPauseStepButtonOptions: {
@@ -82,7 +89,7 @@ export class TransitScreenView extends ScreenView {
         },
       },
     });
-    timeControlNode.centerX = transitViz.left + vizSize / 2;
+    timeControlNode.centerX = transitViz.centerX;
     timeControlNode.bottom = this.layoutBounds.maxY - SCREEN_VIEW_MARGIN;
     this.addChild(timeControlNode);
 

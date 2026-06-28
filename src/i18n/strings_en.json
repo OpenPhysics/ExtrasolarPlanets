@@ -31,10 +31,17 @@
       "showSimulatedMeasurements": "Show Simulated Measurements",
       "showMultipleViews": "Show Multiple Views"
     },
+    "groups": {
+      "preset": "System Presets",
+      "planet": "Planet",
+      "orbit": "Orbit",
+      "star": "Star",
+      "measurements": "Measurements"
+    },
     "readouts": {
       "systemPeriodPattern": "System period: {{value}} days",
       "amplitudePattern": "Amplitude: {{value}} m/s",
-      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(a main sequence star of this mass would have spectral type {{type}}, temperature {{temperature}} K, and radius {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Radial Velocity Curve",
@@ -63,12 +70,19 @@
       "showTheoreticalCurve": "Show Theoretical Curve",
       "showSimulatedMeasurements": "Show Simulated Measurements"
     },
+    "groups": {
+      "preset": "System Presets",
+      "planet": "Planet",
+      "orbit": "Orbit",
+      "star": "Star",
+      "measurements": "Measurements"
+    },
     "readouts": {
       "systemPeriodPattern": "System period: {{value}} days",
       "eclipseDepthPattern": "Eclipse depth: {{value}}",
       "eclipseDurationPattern": "Eclipse duration: {{value}} hours",
       "noEclipse": "No eclipse (planet does not transit)",
-      "starTypePattern": "Spectral type {{type}} · {{temperature}} K · {{radius}} R<sub>Sun</sub>"
+      "starTypePattern": "(a main sequence star of this mass would have spectral type {{type}}, temperature {{temperature}} K, and radius {{radius}} R<sub>Sun</sub>)"
     },
     "chart": {
       "title": "Light Curve",

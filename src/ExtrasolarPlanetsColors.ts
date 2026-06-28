@@ -4,8 +4,10 @@
  * Defines all dynamic colors for the simulation using ProfileColorProperty.
  *
  * Each color has two profiles:
- *   - "default"   — used in standard (dark) mode
+ *   - "default"   — the standard light theme (matches the NAAP Flash look:
+ *                   gray backdrop, white panels, dark text)
  *   - "projector" — used when the user enables Projector Mode in Preferences
+ *                   (higher-contrast light palette for projection)
  *
  * SceneryStack switches profiles automatically; no manual toggling is needed.
  *
@@ -29,47 +31,47 @@ import ExtrasolarPlanetsNamespace from "./ExtrasolarPlanetsNamespace.js";
 const ExtrasolarPlanetsColors = {
   /**
    * Background color for the simulation screen.
-   * Deep navy in default mode; white in projector mode.
+   * Light gray (the NAAP Flash simulator backdrop); pure white for projector use.
    */
   backgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "background", {
-    default: "#1a1a2e",
+    default: "#cccccc",
     projector: "#ffffff",
   }),
 
   /**
    * Primary accent color for highlights, selected items, and key UI elements.
-   * Sky blue in default mode; dark navy in projector mode.
+   * Deep blue on the light theme; darker navy for projector contrast.
    */
   accentColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "accent", {
-    default: "#4fc3f7",
-    projector: "#1a1a2e",
+    default: "#1565c0",
+    projector: "#0d47a1",
   }),
 
   /**
    * Background fill for control panels and dialogs.
-   * Deep blue in default mode; light gray in projector mode.
+   * White cards on the gray backdrop; white in projector mode.
    */
   panelBackgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "panelBackground", {
-    default: "#16213e",
-    projector: "#f5f5f5",
+    default: "#ffffff",
+    projector: "#ffffff",
   }),
 
   /**
    * Border/stroke color for control panels and dialogs.
-   * Teal-navy in default mode; medium gray in projector mode.
+   * Medium gray in default mode; darker gray in projector mode.
    */
   panelBorderColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "panelBorder", {
-    default: "#0f3460",
-    projector: "#999999",
+    default: "#999999",
+    projector: "#666666",
   }),
 
   /**
    * Text color for labels, readouts, and general UI text.
-   * Near-white in default mode; near-black in projector mode.
+   * Near-black on the light theme; pure black for projector contrast.
    */
   textColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "text", {
-    default: "#e0e0e0",
-    projector: "#1a1a1a",
+    default: "#1a1a1a",
+    projector: "#000000",
   }),
 
   /**
@@ -77,62 +79,62 @@ const ExtrasolarPlanetsColors = {
    * screen background so the chart reads as a distinct surface).
    */
   chartBackgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartBackground", {
-    default: "#0d1117",
+    default: "#ffffff",
     projector: "#ffffff",
   }),
 
-  /** Grid-line color inside the charts. Dim navy in default mode; light gray in projector. */
+  /** Grid-line color inside the charts. Light gray in both modes. */
   chartGridColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartGrid", {
-    default: "#2a3a5a",
+    default: "#cccccc",
     projector: "#dddddd",
   }),
 
   /** Color of the theoretical (predicted) curve drawn on the charts. */
   theoreticalCurveColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "theoreticalCurve", {
-    default: "#4fc3f7",
-    projector: "#1565c0",
+    default: "#1565c0",
+    projector: "#0d47a1",
   }),
 
   /** Color of the vertical phase-indicator line that tracks the orbit. */
   phaseIndicatorColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "phaseIndicator", {
-    default: "#ffca28",
-    projector: "#e65100",
+    default: "#d84315",
+    projector: "#b71c1c",
   }),
 
   /** Color of the simulated-measurement scatter points on the charts. */
   measurementColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "measurement", {
-    default: "#ffb74d",
-    projector: "#c43c00",
+    default: "#e65100",
+    projector: "#bf360c",
   }),
 
   /** Color of the transit eclipse-duration arrow drawn across the light curve. */
   durationArrowColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "durationArrow", {
-    default: "#ff8a65",
-    projector: "#b71c1c",
+    default: "#6a1b9a",
+    projector: "#4a148c",
   }),
 
   /** Host-star disk in the orbit/transit visualizations. */
   starColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "star", {
-    default: "#ffd54f",
+    default: "#ff9800",
     projector: "#e65100",
   }),
 
   /** Planet disk in the orbit/transit visualizations. */
   planetColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "planet", {
-    default: "#90a4ae",
+    default: "#607d8b",
     projector: "#37474f",
   }),
 
   /** Orbit ellipse/path drawn in the orbit visualizations. */
   orbitPathColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "orbitPath", {
-    default: "#546e7a",
-    projector: "#9e9e9e",
+    default: "#9e9e9e",
+    projector: "#757575",
   }),
 
   /** Line-of-sight / observer indicator in the RV side & earth views. */
   lineOfSightColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "lineOfSight", {
-    default: "#81c784",
-    projector: "#2e7d32",
+    default: "#2e7d32",
+    projector: "#1b5e20",
   }),
 
   /** Sky background for the transit visualization (deep space). */
