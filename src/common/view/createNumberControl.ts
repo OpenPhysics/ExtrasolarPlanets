@@ -17,6 +17,7 @@ import { DerivedProperty, type TReadOnlyProperty } from "scenerystack/axon";
 import type { Range } from "scenerystack/dot";
 import { NumberControl, type NumberControlOptions } from "scenerystack/scenery-phet";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
+import { FLAT_ARROW_BUTTON_OPTIONS } from "../ExtrasolarPlanetsButtonOptions.js";
 
 export type CreateNumberControlOptions = {
   /** Localized unit suffix appended after the value (e.g. "AU", "m/s"). */
@@ -61,6 +62,7 @@ export function createNumberControl(
       },
       ...(valuePattern ? { valuePattern } : {}),
     },
+    ...FLAT_ARROW_BUTTON_OPTIONS,
     ...options.numberControlOptions,
   });
 }

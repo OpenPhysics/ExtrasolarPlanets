@@ -21,6 +21,10 @@ import { Node, Rectangle } from "scenerystack/scenery";
 import { ResetAllButton, TimeControlNode } from "scenerystack/scenery-phet";
 import type { ScreenViewOptions } from "scenerystack/sim";
 import { ScreenView } from "scenerystack/sim";
+import {
+  FLAT_RESET_ALL_BUTTON_OPTIONS,
+  FLAT_TIME_CONTROL_NODE_OPTIONS,
+} from "../../common/ExtrasolarPlanetsButtonOptions.js";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import { SCREEN_VIEW_MARGIN } from "../../ExtrasolarPlanetsConstants.js";
 import type { RadialVelocityModel } from "../model/RadialVelocityModel.js";
@@ -85,8 +89,11 @@ export class RadialVelocityScreenView extends ScreenView {
     // ── Time control (play/pause/step) — beneath the visualization ──────────────
     const timeControlNode = new TimeControlNode(model.timer.isPlayingProperty, {
       tandem: this.tandem.createTandem("timeControlNode"),
+      ...FLAT_TIME_CONTROL_NODE_OPTIONS,
       playPauseStepButtonOptions: {
+        ...FLAT_TIME_CONTROL_NODE_OPTIONS.playPauseStepButtonOptions,
         stepForwardButtonOptions: {
+          ...FLAT_TIME_CONTROL_NODE_OPTIONS.playPauseStepButtonOptions.stepForwardButtonOptions,
           listener: () => model.step(1 / 60),
         },
       },
@@ -103,6 +110,7 @@ export class RadialVelocityScreenView extends ScreenView {
       },
       right: this.layoutBounds.maxX - SCREEN_VIEW_MARGIN,
       bottom: this.layoutBounds.maxY - SCREEN_VIEW_MARGIN,
+      ...FLAT_RESET_ALL_BUTTON_OPTIONS,
     });
     this.addChild(resetAllButton);
 
