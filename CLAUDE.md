@@ -71,9 +71,9 @@ Shared code uses the `ExtrasolarPlanets` prefix; per-screen code uses `RadialVel
 
 | File | Lines | Purpose |
 |---|---|---|
-| `extrasolarPlanetsQueryParameters.ts` | 38 | URL query params via `QueryStringMachine` |
-| `ExtrasolarPlanetsPreferencesModel.ts` | 33 | `exampleToggleProperty` (BooleanProperty) |
-| `ExtrasolarPlanetsPreferencesNode.ts` | 49 | Custom preferences UI: header + checkbox, uses `ExtrasolarPlanetsColors` |
+| `extrasolarPlanetsQueryParameters.ts` | | URL query params via `QueryStringMachine` (none yet) |
+| `ExtrasolarPlanetsPreferencesModel.ts` | | Empty scaffold for future sim-specific preferences |
+| `ExtrasolarPlanetsPreferencesNode.ts` | | Preferences → Simulation tab header (no controls yet) |
 
 ## Common components
 

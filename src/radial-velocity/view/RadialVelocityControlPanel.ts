@@ -197,8 +197,10 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
 
     super(content);
 
+    // Match visual column order: preset → animation speed → planet → orbit → star → measurements.
     this.controlsInOrder = [
       presetComboBox,
+      animationSpeedControl,
       planetMassControl,
       eccentricityControl,
       semimajorAxisControl,
@@ -207,7 +209,6 @@ export class RadialVelocityControlPanel extends ExtrasolarPlanetsPanel {
       starMassControl,
       noiseControl,
       numberControl,
-      animationSpeedControl,
       showCurveCheckbox,
       showMeasurementsCheckbox,
       showViewsCheckbox,

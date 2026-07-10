@@ -9,6 +9,7 @@
  */
 
 import { DerivedProperty, PatternStringProperty, type TReadOnlyProperty } from "scenerystack/axon";
+import { toFixed } from "scenerystack/dot";
 import { RichText, VBox } from "scenerystack/scenery";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import type { StarProperties } from "../StarProperties.js";
@@ -27,7 +28,7 @@ export class StarPropertiesNode extends VBox {
     const temperatureProperty = new DerivedProperty([starPropertiesProperty], (star) =>
       formatTemperature(star.temperatureK),
     );
-    const radiusProperty = new DerivedProperty([starPropertiesProperty], (star) => star.radiusSolarRadii.toFixed(2));
+    const radiusProperty = new DerivedProperty([starPropertiesProperty], (star) => toFixed(star.radiusSolarRadii, 2));
 
     const labelProperty = new PatternStringProperty(starTypePatternProperty, {
       type: typeProperty,

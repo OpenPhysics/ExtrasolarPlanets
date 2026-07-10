@@ -1,114 +1,81 @@
 # Implementation Notes - Extrasolar Planets
 
-## Architecture Overview
+## Architecture overview
 
-TemplateSingleSim is a minimal starter scaffold for forking new single-screen SceneryStack simulations. It demonstrates the Model-View pattern, color profiles, localization, reset behavior, and reusable common components without domain-specific physics.
-
-### High-Level Architecture
+Two independent screens, each a standard `Screen<Model, ScreenView>` pairing. Screens share no model
+state; they share physics helpers, themed panels, and i18n/colors at the `src/` root and in
+`src/common/`.
 
 ```
 main.ts
-  └─ ExtrasolarPlanetsScreen             (Screen<ExtrasolarPlanetsModel, ExtrasolarPlanetsScreenView>)
-       ├─ ExtrasolarPlanetsModel          state + logic  (src/extrasolar-planets-screen/model/)
-       └─ ExtrasolarPlanetsScreenView     visuals        (src/extrasolar-planets-screen/view/)
-            ├─ ExtrasolarPlanetsScreenSummaryContent     (PDOM overview)
-            └─ ExtrasolarPlanetsKeyboardHelpContent      (keyboard help dialog)
+  ├─ RadialVelocityScreen          (Screen<RadialVelocityModel, RadialVelocityScreenView>)
+  │    ├─ radial-velocity/model/   RadialVelocityModel
+  │    └─ radial-velocity/view/    chart, orbit views, control panel, a11y
+  └─ TransitScreen                 (Screen<TransitModel, TransitScreenView>)
+       ├─ transit/model/           TransitModel, EclipseGeometry
+       └─ transit/view/            chart, transit visualization, control panel, a11y
 
 src/common/
-  ├─ SimPanel.ts           pre-themed panel (all screens share ExtrasolarPlanetsColors)
-  └─ TimeModel.ts          composable play/pause + elapsed time
+  ├─ OrbitalMechanics.ts       Kepler / RV pure helpers (SI)
+  ├─ StarProperties.ts         mass → L, T, R, spectral type
+  ├─ TimeModel.ts              play/pause + elapsed time
+  ├─ ExtrasolarPlanetsPanel.ts pre-themed Panel (ExtrasolarPlanetsColors)
+  ├─ Projection3D.ts           orbit / transit 3-D helpers
+  ├─ RandomUtils.ts            Marsaglia-polar Gaussian for measurements
+  └─ view/                     createNumberControl, chartUtils, StarPropertiesNode
 
 src/preferences/
-  ├─ ExtrasolarPlanetsPreferencesModel   sim-specific pref state
-  ├─ ExtrasolarPlanetsPreferencesNode    pref UI shown in Preferences → Simulation
-  └─ extrasolarPlanetsQueryParameters    query-parameter declarations
+  ├─ ExtrasolarPlanetsPreferencesModel   empty scaffold (tandem reserved)
+  ├─ ExtrasolarPlanetsPreferencesNode
+  └─ extrasolarPlanetsQueryParameters
 ```
 
-Data flows Model → View through AXON `Property` objects. The view observes
-properties via `.link()` or `.lazyLink()` and updates reactively.
+Data flows Model → View through AXON `Property` / `DerivedProperty`. Neither model imports from its
+`view/`. Educator-facing math: [model.md](./model.md).
 
-## Model Components
+## Model components
 
-### ExtrasolarPlanetsModel
+### RadialVelocityModel (`radial-velocity/model/`)
 
-An empty coordinator with documented hooks for `step(dt)` and `reset()`.
-Add physics state as `BooleanProperty`, `NumberProperty`, etc. from
-`scenerystack/axon`.
+Owns orbital controls (masses, *a*, *e*, *i*, *ω*), measurement noise / count, phase animation, and
+preset selection. Derives period, *K*, systemic velocity, star properties, theoretical RV curve, and
+noisy measurement scatter. Composes `TimeModel` for play/pause; `step(dt)` advances orbital phase from
+`animationSpeedProperty` (frame-rate independent).
 
-### TimeModel (common)
+### TransitModel + EclipseGeometry (`transit/model/`)
 
-`src/common/TimeModel.ts` is a reusable play/pause + elapsed-time model for
-animated sims. Compose it into your screen model rather than subclassing:
+Same orbital/measurement pattern plus planet radius. Assembles a `TransitSystem` and feeds
+`EclipseGeometry` for projected separation, overlap area, normalized flux (no limb darkening), eclipse
+interval, depth, and duration. Theoretical flux curve + Gaussian measurements mirror the RV screen.
 
-```typescript
-export class YourModel implements TModel {
-  public readonly timer = new TimeModel();
+### Shared pure modules (`common/`)
 
-  public step(dt: number): void {
-    this.timer.step(dt);
-    // physics driven by this.timer.timeProperty.value
-  }
-  public reset(): void { this.timer.reset(); }
-}
-```
+`OrbitalMechanics` and `StarProperties` are UI-free and unit-tested. Constants / presets / slider ranges
+live in `ExtrasolarPlanetsConstants.ts` (Flash-faithful SI values; separate Jupiter-mass constants per
+screen).
 
-## View Components
+## View components
 
-### ExtrasolarPlanetsScreenView as Coordinator
+Each screen view lays out visualization + bamboo chart + control panel, uses
+`ExtrasolarPlanetsPanel` / `ExtrasolarPlanetsColors` (default + projector), and wires Reset All to
+`model.reset()`. Shared chart helpers and star-property readouts sit under `common/view/`.
 
-The screen view demonstrates layout using `layoutBounds`, background fill from
-`ExtrasolarPlanetsColors.ts`, and a `ResetAllButton` wired to `model.reset()`. Add
-specialized sub-nodes under `src/extrasolar-planets-screen/view/`.
+## Preferences
 
-### SimPanel (common)
+`ExtrasolarPlanetsPreferencesModel` is an empty scaffold — no sim-specific preference Properties yet.
+Query-parameter module and Preferences → Simulation node remain wired for future additions.
 
-`src/common/SimPanel.ts` wraps SceneryStack's `Panel` with the sim's color
-scheme baked in. All control panels should use `SimPanel` so projector-mode
-switching is automatic:
+## Disposal
 
-```typescript
-const panel = new SimPanel(content);            // defaults
-const panel = new SimPanel(content, { xMargin: 20 }); // any PanelOption override
-```
+Screens live for the sim lifetime. Models and views do not tear down mid-session; treat Properties and
+listeners as **screen-lifetime** (no per-interaction dispose required for the current architecture).
 
-### Color Scheme
+## Tests
 
-`ExtrasolarPlanetsColors.ts` defines `ProfileColorProperty` instances for "default" (dark)
-and "projector" (light) profiles. SceneryStack switches profiles automatically
-when the user toggles Projector Mode in Preferences.
+`tests/` covers orbital math and related pure code: `OrbitalMechanics`, `EclipseGeometry`,
+`StarProperties`, `RandomUtils`, `Projection3D`, `Presets`, `TimeModel`.
 
-## Forking this template
+## Multi-screen
 
-### Automated rename
-
-```sh
-npm run rename -- --id friction --name "Friction"
-npm run check
-```
-
-`scripts/rename-sim.ts` replaces all template identifiers in file content and
-renames files and folders in one pass.
-
-### Manual fork checklist
-
-- Update `package.json` name, `init.ts` name/version, `brand.ts`
-- Replace placeholder view content with play area and control panels
-- Replace `ExtrasolarPlanetsColors.ts` colors with sim-specific palette
-- Update locale JSON files: title, screen names, a11y strings
-- Regenerate PWA icons (`npm run icons`) after editing `public/icons/icon.svg`
-- Add `doc/implementation-notes.md` describing the new sim's architecture
-
-## Multi-screen simulations
-
-See `doc/multi-screen.md` for a complete guide covering:
-- Independent vs. shared-model architectures
-- File structure for each screen
-- StringManager and locale changes
-- Home-screen icon requirements
-- Per-screen accessibility strings
-
-## Known gaps / TODOs
-
-- No dispose() calls yet — add them once Properties gain external listeners.
-- `ExtrasolarPlanetsModel.step()` and `reset()` bodies are stubs — fill in with real physics.
-- `ExtrasolarPlanetsScreenView` pdomOrder TODO comment — add interactive nodes as they are created.
+Independent-state pattern — see [multi-screen.md](./multi-screen.md). The two NAAP labs are separate
+simulators; they share helpers only.

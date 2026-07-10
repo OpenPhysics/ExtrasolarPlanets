@@ -221,8 +221,10 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
 
     super(content);
 
+    // Match visual column order: preset → animation speed → planet → orbit → star → measurements.
     this.controlsInOrder = [
       presetComboBox,
+      animationSpeedControl,
       planetMassControl,
       planetRadiusControl,
       eccentricityControl,
@@ -232,7 +234,6 @@ export class TransitControlPanel extends ExtrasolarPlanetsPanel {
       starMassControl,
       noiseControl,
       numberControl,
-      animationSpeedControl,
       showCurveCheckbox,
       showMeasurementsCheckbox,
     ];
