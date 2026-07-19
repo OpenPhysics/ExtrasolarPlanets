@@ -127,8 +127,8 @@ const ExtrasolarPlanetsColors = {
 
   /** Orbit ellipse/path drawn in the orbit visualizations. */
   orbitPathColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "orbitPath", {
-    default: "#9e9e9e",
-    projector: "#757575",
+    default: "#616161",
+    projector: "#424242",
   }),
 
   /** Line-of-sight / observer indicator in the RV side & earth views. */
