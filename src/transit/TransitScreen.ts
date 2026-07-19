@@ -9,6 +9,7 @@ import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import type { ScreenOptions } from "scenerystack/sim";
 import { Screen } from "scenerystack/sim";
 import type { Tandem } from "scenerystack/tandem";
+import { createTransitIcon } from "../common/ExtrasolarPlanetsScreenIcons.js";
 import ExtrasolarPlanetsColors from "../ExtrasolarPlanetsColors.js";
 import { TransitModel } from "./model/TransitModel.js";
 import { TransitKeyboardHelpContent } from "./view/TransitKeyboardHelpContent.js";
@@ -31,6 +32,8 @@ export class TransitScreen extends Screen<TransitModel, TransitScreenView> {
         {
           backgroundColorProperty: ExtrasolarPlanetsColors.backgroundColorProperty,
           createKeyboardHelpNode: () => new TransitKeyboardHelpContent(),
+          homeScreenIcon: createTransitIcon(),
+          navigationBarIcon: createTransitIcon(),
         },
         options,
       ),

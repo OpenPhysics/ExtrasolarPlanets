@@ -9,6 +9,7 @@ import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import type { ScreenOptions } from "scenerystack/sim";
 import { Screen } from "scenerystack/sim";
 import type { Tandem } from "scenerystack/tandem";
+import { createRadialVelocityIcon } from "../common/ExtrasolarPlanetsScreenIcons.js";
 import ExtrasolarPlanetsColors from "../ExtrasolarPlanetsColors.js";
 import { RadialVelocityModel } from "./model/RadialVelocityModel.js";
 import { RadialVelocityKeyboardHelpContent } from "./view/RadialVelocityKeyboardHelpContent.js";
@@ -31,6 +32,8 @@ export class RadialVelocityScreen extends Screen<RadialVelocityModel, RadialVelo
         {
           backgroundColorProperty: ExtrasolarPlanetsColors.backgroundColorProperty,
           createKeyboardHelpNode: () => new RadialVelocityKeyboardHelpContent(),
+          homeScreenIcon: createRadialVelocityIcon(),
+          navigationBarIcon: createRadialVelocityIcon(),
         },
         options,
       ),
