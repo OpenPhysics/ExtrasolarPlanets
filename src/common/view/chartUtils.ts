@@ -51,13 +51,26 @@ export function formatTickValue(value: number, decimalPlaces: number): string {
 }
 
 /**
- * Y-axis `Range` for a sampled curve. The actual min/max of the data is padded
- * by 10 % so the curve does not touch the frame. Perfectly (or near-) flat
- * curves — e.g. a non-transiting geometry where flux is 1 everywhere, or a
- * vanishing-mass planet where K → 0 — collapse to a symmetric window of
- * `flatHalfWindow` around the centre so the chart never degenerates to a line.
+ * Y-axis `Range` for a sampled curve. The actual min/max of the data is first
+ * expanded by `noiseMargin` (in model-y units) on each side so that simulated
+ * measurement scatter — which spreads roughly ±3σ around the theoretical curve —
+ * stays inside the plotting area instead of being clipped. The Flash originals
+ * scaled their charts this way (`noMeasurementsNoise` when measurements are
+ * hidden, the real noise σ when shown); callers pass `k·noise` here. The
+ * noise-widened extent is then padded by a further 10 % so the data never touches
+ * the frame.
+ *
+ * Perfectly (or near-) flat curves with no noise margin — e.g. a non-transiting
+ * geometry where flux is 1 everywhere, or a vanishing-mass planet where K → 0 —
+ * collapse to a symmetric window of `flatHalfWindow` around the centre so the
+ * chart never degenerates to a line.
+ *
+ * @param curve - the sampled (phase, y) theoretical curve
+ * @param flatHalfWindow - half-height of the fallback window for a flat curve
+ * @param noiseMargin - extra model-y half-margin added to each side (default 0);
+ *   pass `sigmas·noise` to leave room for the measurement scatter
  */
-export function computeCurveYRange(curve: readonly Vector2[], flatHalfWindow: number): Range {
+export function computeCurveYRange(curve: readonly Vector2[], flatHalfWindow: number, noiseMargin = 0): Range {
   let min = Number.POSITIVE_INFINITY;
   let max = Number.NEGATIVE_INFINITY;
   for (const point of curve) {
@@ -72,6 +85,11 @@ export function computeCurveYRange(curve: readonly Vector2[], flatHalfWindow: nu
   if (!(Number.isFinite(min) && Number.isFinite(max))) {
     return new Range(-flatHalfWindow, flatHalfWindow);
   }
+
+  // Widen for the measurement scatter before deciding flat-vs-padded.
+  const margin = Number.isFinite(noiseMargin) && noiseMargin > 0 ? noiseMargin : 0;
+  min -= margin;
+  max += margin;
 
   const span = max - min;
   const center = (max + min) / 2;
