@@ -15,7 +15,7 @@
  * arrive in later milestones (M5).
  */
 
-import type { TReadOnlyProperty } from "scenerystack/axon";
+import { Multilink, type TReadOnlyProperty } from "scenerystack/axon";
 import {
   AxisLine,
   ChartRectangle,
@@ -33,7 +33,12 @@ import { Line, Node, Text } from "scenerystack/scenery";
 import { ArrowNode } from "scenerystack/scenery-phet";
 import { computeCurveYRange, decimalPlacesForStep, formatTickValue, niceStep } from "../../common/view/chartUtils.js";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
-import { CHART_VIEW_HEIGHT, CHART_VIEW_WIDTH } from "../../ExtrasolarPlanetsConstants.js";
+import {
+  CHART_NOISE_MARGIN_SIGMAS,
+  CHART_VIEW_HEIGHT,
+  CHART_VIEW_WIDTH,
+  TRANSIT_NO_MEASUREMENTS_NOISE,
+} from "../../ExtrasolarPlanetsConstants.js";
 import { StringManager } from "../../i18n/StringManager.js";
 import type { TransitModel } from "../model/TransitModel.js";
 
@@ -201,9 +206,18 @@ export class TransitChartNode extends Node {
       );
     };
 
-    model.fluxCurveProperty.link((curve: Vector2[]) => {
-      fluxPlot.setDataSet(curve);
-      updateYAxis(computeCurveYRange(curve, FLAT_HALF_WINDOW_FLUX));
-    });
+    // The y-axis must leave room for the measurement scatter, so it rescales when
+    // the noise σ or the measurement-visibility toggle change, not only the curve.
+    // When measurements are hidden a near-zero margin (noMeasurementsNoise) lets
+    // the theoretical curve fill the view; when shown, ±CHART_NOISE_MARGIN_SIGMAS·σ
+    // of headroom keeps the noisy points inside the plotting area.
+    Multilink.multilink(
+      [model.fluxCurveProperty, model.noiseProperty, model.showSimulatedMeasurementsProperty],
+      (curve: Vector2[], noise: number, showMeasurements: boolean) => {
+        fluxPlot.setDataSet(curve);
+        const noiseForMargin = showMeasurements ? noise : TRANSIT_NO_MEASUREMENTS_NOISE;
+        updateYAxis(computeCurveYRange(curve, FLAT_HALF_WINDOW_FLUX, CHART_NOISE_MARGIN_SIGMAS * noiseForMargin));
+      },
+    );
   }
 }

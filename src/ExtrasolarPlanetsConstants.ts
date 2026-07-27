@@ -118,6 +118,15 @@ export const RV_LONGITUDE_DEFAULT = 0;
 export const RV_NOISE_RANGE = new Range(1, 100); // m/s
 export const RV_NOISE_DEFAULT = 15;
 
+/**
+ * Velocity-noise value used for the chart's y-axis margin when simulated
+ * measurements are hidden — the RV analogue of the transit `noMeasurementsNoise`
+ * (see below). Zero means "no extra margin, the theoretical curve fills the
+ * view", matching the port's prior behaviour when scatter is off. The Flash RV
+ * sim's exact hidden-state value is unverified against the decompiled source.
+ */
+export const RV_NO_MEASUREMENTS_NOISE = 0; // m/s
+
 export const RV_NUMBER_OF_MEASUREMENTS_RANGE = new Range(10, 300);
 export const RV_NUMBER_OF_MEASUREMENTS_DEFAULT = 150;
 
@@ -165,11 +174,22 @@ export const TRANSIT_ANIMATION_SPEED_RANGE = new Range(0.00001, 0.001);
 export const TRANSIT_ANIMATION_SPEED_DEFAULT = 0.0005;
 
 /**
- * Flux-noise value fed to the chart when measurements are hidden — only sets the
- * plot's y-axis margin so the curve fills the view (it is not a measurement
- * floor). Verbatim `noMeasurementsNoise` from transitSimulator017.
+ * Flux-noise value fed to the chart's y-axis margin when measurements are hidden
+ * — only sets the plot's vertical margin so the curve fills the view (it is not a
+ * measurement floor). Verbatim `noMeasurementsNoise` from transitSimulator017.
+ * When measurements are shown the real noise slider σ is used instead, so the
+ * scatter (≈ ±CHART_NOISE_MARGIN_SIGMAS·σ) stays inside the plotting area.
  */
 export const TRANSIT_NO_MEASUREMENTS_NOISE = 0.00001;
+
+/**
+ * How many standard deviations of measurement noise the charts leave as vertical
+ * margin so the Gaussian scatter is not clipped by the plotting area. ±3σ covers
+ * ~99.7 % of the points. The Flash originals derived the y-axis margin from the
+ * noise value directly; the exact multiplier is not recorded in the decompiled
+ * source, so 3 is a faithful reconstruction — revisit if the SWF is re-examined.
+ */
+export const CHART_NOISE_MARGIN_SIGMAS = 3;
 
 /** Pixel radius of the planet disk in the transit visualization (kept visible). */
 export const TRANSIT_PLANET_VIEW_RADIUS = 6;
@@ -412,4 +432,7 @@ ExtrasolarPlanetsNamespace.register("ExtrasolarPlanetsConstants", {
   TRANSIT_ANIMATION_SPEED_DEFAULT,
   TRANSIT_PLANET_VIEW_RADIUS,
   TRANSIT_STAR_VIEW_RADIUS,
+  RV_NO_MEASUREMENTS_NOISE,
+  TRANSIT_NO_MEASUREMENTS_NOISE,
+  CHART_NOISE_MARGIN_SIGMAS,
 });
