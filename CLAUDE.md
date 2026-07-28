@@ -79,6 +79,7 @@ npm run lint && npm run check && npm run build && npm test
 
 ## Development notes
 
+- **`npm run decompile`** extracts NAAP Flash ActionScript via JPEXS FFDec into gitignored `NAAP/decompiled/` — read-only reference.
 - Pure physics lives in `src/common/` and `EclipseGeometry.ts` with zero SceneryStack imports.
 - Separate Jupiter-mass constants for RV vs Transit sliders (`RV_M_JUP_KG` vs `TRANSIT_M_JUP_KG`).
 - After `npm run build`, the sim is installable offline via Workbox (`dist/manifest.webmanifest`).
