@@ -8,7 +8,7 @@ system are detected via the Doppler-wobble and light-curve-dip methods. The orig
 `.swf`/`.fla` sources live under `NAAP/` in this repo (physics is embedded as readable
 ActionScript inside the FLA binaries and has been fully extracted — see formulas below).
 
-This project is a SceneryStack two-screen sim scaffolded from `TemplateSingleSim`; both
+This project is a SceneryStack two-screen sim scaffolded from `SceneryStackTemplate`; both
 `radial-velocity/` and `transit/` screens are currently empty placeholders (background +
 centered label + Reset All). The goal is a faithful, modern, accessible TypeScript port of
 both simulators with charts, orbit/transit visualizations, presets, noise/measurement
