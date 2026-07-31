@@ -87,12 +87,12 @@ export class RadialVelocityChartNode extends Node {
 
     const xTicks = new TickMarkSet(chartTransform, Orientation.HORIZONTAL, PHASE_AXIS_SPACING, {
       edge: "min",
-      stroke: ExtrasolarPlanetsColors.textColorProperty,
+      stroke: ExtrasolarPlanetsColors.chartTickColorProperty,
       extent: 6,
     });
     const yTicks = new TickMarkSet(chartTransform, Orientation.VERTICAL, niceStep(2 * FLAT_HALF_WINDOW_MPS), {
       edge: "min",
-      stroke: ExtrasolarPlanetsColors.textColorProperty,
+      stroke: ExtrasolarPlanetsColors.chartTickColorProperty,
       extent: 6,
     });
 
@@ -100,13 +100,16 @@ export class RadialVelocityChartNode extends Node {
       edge: "min",
       extent: 6,
       createLabel: (value) =>
-        new Text(formatPhase(value), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.textColorProperty }),
+        new Text(formatPhase(value), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.chartTickColorProperty }),
     });
     const yLabels = new TickLabelSet(chartTransform, Orientation.VERTICAL, niceStep(2 * FLAT_HALF_WINDOW_MPS), {
       edge: "min",
       extent: 6,
       createLabel: (value) =>
-        new Text(formatTickValue(value, 0), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.textColorProperty }),
+        new Text(formatTickValue(value, 0), {
+          font: TICK_LABEL_FONT,
+          fill: ExtrasolarPlanetsColors.chartTickColorProperty,
+        }),
     });
 
     // Zero-velocity reference (auto-hides when 0 is outside the y-range).
@@ -156,7 +159,7 @@ export class RadialVelocityChartNode extends Node {
     // ── Title ──────────────────────────────────────────────────────────────────
     const title = new Text(chartStrings.titleStringProperty as TReadOnlyProperty<string>, {
       font: TITLE_FONT,
-      fill: ExtrasolarPlanetsColors.textColorProperty,
+      fill: ExtrasolarPlanetsColors.chartTickColorProperty,
     });
     title.centerX = CHART_LEFT_PADDING + CHART_VIEW_WIDTH / 2;
     title.top = 0;
@@ -175,7 +178,7 @@ export class RadialVelocityChartNode extends Node {
         (value) =>
           new Text(formatTickValue(value, decimals), {
             font: TICK_LABEL_FONT,
-            fill: ExtrasolarPlanetsColors.textColorProperty,
+            fill: ExtrasolarPlanetsColors.chartTickColorProperty,
           }),
       );
     };

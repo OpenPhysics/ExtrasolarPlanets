@@ -31,10 +31,10 @@ import ExtrasolarPlanetsNamespace from "./ExtrasolarPlanetsNamespace.js";
 const ExtrasolarPlanetsColors = {
   /**
    * Background color for the simulation screen.
-   * Light gray (the NAAP Flash simulator backdrop); pure white for projector use.
+   * Black in default mode; pure white for projector use.
    */
   backgroundColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "background", {
-    default: "#cccccc",
+    default: "#000000",
     projector: "#ffffff",
   }),
 
@@ -87,6 +87,16 @@ const ExtrasolarPlanetsColors = {
   chartGridColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartGrid", {
     default: "#cccccc",
     projector: "#dddddd",
+  }),
+
+  /**
+   * Foreground for chart-axis ticks, tick labels, and chart/view titles rendered
+   * on the dark screen/sky background (outside the white chart and panel areas).
+   * Light in default mode; near-black for the white projector background.
+   */
+  chartTickColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "chartTick", {
+    default: "#e0e0e0",
+    projector: "#1a1a1a",
   }),
 
   /** Color of the theoretical (predicted) curve drawn on the charts. */

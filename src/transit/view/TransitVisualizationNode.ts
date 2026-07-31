@@ -52,7 +52,7 @@ export class TransitVisualizationNode extends Node {
 
     const title = new Text(viewStrings.transitViewStringProperty, {
       font: "12px sans-serif",
-      fill: ExtrasolarPlanetsColors.textColorProperty,
+      fill: ExtrasolarPlanetsColors.chartTickColorProperty,
       maxWidth: VIEW_SIZE - 8,
     });
     title.centerX = VIEW_SIZE / 2;

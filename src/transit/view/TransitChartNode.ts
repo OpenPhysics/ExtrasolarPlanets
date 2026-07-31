@@ -88,12 +88,12 @@ export class TransitChartNode extends Node {
 
     const xTicks = new TickMarkSet(chartTransform, Orientation.HORIZONTAL, PHASE_AXIS_SPACING, {
       edge: "min",
-      stroke: ExtrasolarPlanetsColors.textColorProperty,
+      stroke: ExtrasolarPlanetsColors.chartTickColorProperty,
       extent: 6,
     });
     const yTicks = new TickMarkSet(chartTransform, Orientation.VERTICAL, niceStep(2 * FLAT_HALF_WINDOW_FLUX), {
       edge: "min",
-      stroke: ExtrasolarPlanetsColors.textColorProperty,
+      stroke: ExtrasolarPlanetsColors.chartTickColorProperty,
       extent: 6,
     });
 
@@ -101,13 +101,16 @@ export class TransitChartNode extends Node {
       edge: "min",
       extent: 6,
       createLabel: (value) =>
-        new Text(formatPhase(value), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.textColorProperty }),
+        new Text(formatPhase(value), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.chartTickColorProperty }),
     });
     const yLabels = new TickLabelSet(chartTransform, Orientation.VERTICAL, niceStep(2 * FLAT_HALF_WINDOW_FLUX), {
       edge: "min",
       extent: 6,
       createLabel: (value) =>
-        new Text(formatTickValue(value, 2), { font: TICK_LABEL_FONT, fill: ExtrasolarPlanetsColors.textColorProperty }),
+        new Text(formatTickValue(value, 2), {
+          font: TICK_LABEL_FONT,
+          fill: ExtrasolarPlanetsColors.chartTickColorProperty,
+        }),
     });
 
     // Flux = 1 baseline reference (the unocculted level).
@@ -182,7 +185,7 @@ export class TransitChartNode extends Node {
     // ── Title ──────────────────────────────────────────────────────────────────
     const title = new Text(chartStrings.titleStringProperty as TReadOnlyProperty<string>, {
       font: TITLE_FONT,
-      fill: ExtrasolarPlanetsColors.textColorProperty,
+      fill: ExtrasolarPlanetsColors.chartTickColorProperty,
     });
     title.centerX = CHART_LEFT_PADDING + CHART_VIEW_WIDTH / 2;
     title.top = 0;
@@ -201,7 +204,7 @@ export class TransitChartNode extends Node {
         (value) =>
           new Text(formatTickValue(value, decimals), {
             font: TICK_LABEL_FONT,
-            fill: ExtrasolarPlanetsColors.textColorProperty,
+            fill: ExtrasolarPlanetsColors.chartTickColorProperty,
           }),
       );
     };
