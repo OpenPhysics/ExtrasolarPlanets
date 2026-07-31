@@ -20,7 +20,7 @@ export class ExtrasolarPlanetsPreferencesNode extends VBox {
 
     const header = new Text(prefStrings.titleStringProperty, {
       font: new PhetFont({ size: 18, weight: "bold" }),
-      fill: ExtrasolarPlanetsColors.textColorProperty,
+      fill: ExtrasolarPlanetsColors.controlSurfaceTextColorProperty,
     });
 
     super({

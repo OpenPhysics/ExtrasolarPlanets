@@ -142,6 +142,22 @@ const ExtrasolarPlanetsColors = {
     default: "#000000",
     projector: "#222222",
   }),
+
+  // ── Light control surfaces ───────────────────────────────────────────────────
+  // White chrome (combo boxes, flat push buttons, editable input fields, Preferences)
+  // stays light in both profiles; its text stays dark.
+  controlSurfaceColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "controlSurface", {
+    default: "#ffffff",
+    projector: "#ffffff",
+  }),
+  controlSurfaceDisabledColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "controlSurfaceDisabled", {
+    default: "#cccccc",
+    projector: "#cccccc",
+  }),
+  controlSurfaceTextColorProperty: new ProfileColorProperty(ExtrasolarPlanetsNamespace, "controlSurfaceText", {
+    default: "#1a1a1a",
+    projector: "#1a1a1a",
+  }),
 };
 
 export default ExtrasolarPlanetsColors;
