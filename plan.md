@@ -5,7 +5,7 @@
 The NAAP Extrasolar Planets lab is two Flash (ActionScript 2) simulators — **Exoplanet
 Radial Velocity** and **Exoplanet Transit** — that teach how planets outside our solar
 system are detected via the Doppler-wobble and light-curve-dip methods. The original
-`.swf`/`.fla` sources live under `NAAP/` in this repo (physics is embedded as readable
+`.swf`/`.fla` sources live under `../Baseline/Astronomy/` (OpenPhysics/Baseline) (physics is embedded as readable
 ActionScript inside the FLA binaries and has been fully extracted — see formulas below).
 
 This project is a SceneryStack two-screen sim scaffolded from `SceneryStackTemplate`; both
@@ -30,30 +30,30 @@ the Physics section below were extracted from these sources.
 
 | Screen | Source `.fla` (edit history) | Runnable `.swf` |
 |---|---|---|
-| Radial Velocity | `NAAP/flash-animations/flashdev2/radialVelocitySimulator/radialVelocitySimulator012.fla` | `…/radialVelocitySimulator012.swf` |
-| Transit | `NAAP/flash-animations/flashdev2/transitSimulator/transitSimulator017.fla` | `…/transitSimulator017.swf` |
+| Radial Velocity | `../Baseline/Astronomy/flash-animations/flashdev2/radialVelocitySimulator/radialVelocitySimulator012.fla` | `…/radialVelocitySimulator012.swf` |
+| Transit | `../Baseline/Astronomy/flash-animations/flashdev2/transitSimulator/transitSimulator017.fla` | `…/transitSimulator017.swf` |
 
 (Older/alt cuts `…011`, `…012-B/C/D`, `…017-B/C/D` sit alongside — ignore unless `012`/`017` is ambiguous.)
 
 **Deployed copies + visual target (the reference behavior and look to match):**
 
-- RV: `NAAP/astroUNL/naap/esp/animations/radialVelocitySimulator.{swf,html,jpg}`
-- Transit: `NAAP/astroUNL/naap/esp/animations/transitSimulator.{swf,html,jpg}`
+- RV: `../Baseline/Astronomy/astroUNL/naap/esp/animations/radialVelocitySimulator.{swf,html,jpg}`
+- Transit: `../Baseline/Astronomy/astroUNL/naap/esp/animations/transitSimulator.{swf,html,jpg}`
 - (the `.jpg`s are the reference screenshots for the screenshot diff in Verification §5)
 
 **Numeric ground truth — presets, expected outputs, answer key:**
 
-- `NAAP/astroUNL/naap/esp/naap_esp_sg.pdf` (student guide; editable `…sg.doc` alongside)
-- duplicate: `NAAP/naap-air-app/files/esp/naap_esp_sg.pdf`
+- `../Baseline/Astronomy/astroUNL/naap/esp/naap_esp_sg.pdf` (student guide; editable `…sg.doc` alongside)
+- duplicate: `../Baseline/Astronomy/naap-air-app/files/esp/naap_esp_sg.pdf`
 
 **Lab instruction pages (what each control teaches — pedagogical context, not physics):**
 
-- `NAAP/astroUNL/naap/esp/`: `esp.html` (landing) · `introduction.html` · `detection.html` · `dopplereffect.html` · `centerofmass.html` · `esp_i.html` (instructor) · `esp_po.html`
+- `../Baseline/Astronomy/astroUNL/naap/esp/`: `esp.html` (landing) · `introduction.html` · `detection.html` · `dopplereffect.html` · `centerofmass.html` · `esp_i.html` (instructor) · `esp_po.html`
 
 **Readable ActionScript physics (NOT inside the FLAs — actual `.as` you can read directly):**
 
 - **Transit blackbody flux + disk overlap + bolometric correction** →
-  `NAAP/flash-animations/flashdev2/variableStarLabs/older/StarFieldComponent/edu/unl/astro/starField/EclipsingBinary.as`.
+  `../Baseline/Astronomy/flash-animations/flashdev2/variableStarLabs/older/StarFieldComponent/edu/unl/astro/starField/EclipsingBinary.as`.
   This is the source of the transit flux math (the `_H1`/`_H2` occulted-body selection, `getBolometricCorrection()`, `overlap`, `maxVisFlux = (R1²·H1 + R2²·H2)·π`, the `1.89553328524593e-43` flux constant) — the transit star physics is **shared with the Variable Star lab**. (Duplicated under `StarFieldComponent3/…` and `starFieldEditor/EclipsingBinary.as`.)
 
 **Supporting concept/component FLAs (binary — decompile if you need detail):**
@@ -63,7 +63,7 @@ the Physics section below were extracted from these sources.
 - Blackbody curve → `simpleBlackbody/simpleBlackbody017.fla`; sci-notation/formatting → `numberFunctions/numberFunctions002.fla`, `toFixed/`, `sci_not/`
 - RV building blocks → `radialVelocityComponent/radialVelocityComponent010.fla`, `radialVelocityDemo/radialVelocityDemo003.fla`, `centerOfMass/`, `exoplanetOrbitDiagram/`, `exoplanetComboDiagram/`
 - Transit building blocks → `transitMovie/transitMovie041.fla`, `lightcurveComponentII/`
-- ESP background concept animations → `NAAP/naap-air-app/src-background-pages/esp/{esp-intro,esp-detection,esp-doppler,esp-center-of-mass}.fla`
+- ESP background concept animations → `../Baseline/Astronomy/naap-air-app/src-background-pages/esp/{esp-intro,esp-detection,esp-doppler,esp-center-of-mass}.fla`
 
 ### Decompiling the Flash sources
 
@@ -260,10 +260,10 @@ Each milestone adds Properties before any view references them and adds new stri
    ⚠ The earlier "3.56 day" figure (from the reference screenshot) does **not** match this preset — a
    faithful port will display ~3.47 d for HD 209458 b, so target 3.47 d, not 3.56 d. Eclipse depth
    ≈ 0.0159 and duration ≈ 2.93 h are still to be confirmed once `EclipseGeometry` runs (depth ≈ (r2/r1)²
-   gives ~0.014–0.016, in the right range). Cross-check against `NAAP/astroUNL/naap/esp/naap_esp_sg.pdf`
+   gives ~0.014–0.016, in the right range). Cross-check against `../Baseline/Astronomy/astroUNL/naap/esp/naap_esp_sg.pdf`
    and the deployed `astroUNL/naap/esp/animations/*.swf` if numbers diverge.
 4. Accessibility: tab through every control (order matches `pdomOrder`), confirm screen-summary `currentDetails` updates live as parameters change, and the keyboard-help dialog lists slider + combo-box sections.
-5. Optionally drive the running sim with the Playwright MCP browser tools for a screenshot diff against the two reference images (`NAAP/astroUNL/naap/esp/animations/radialVelocitySimulator.jpg` and `…/transitSimulator.jpg`).
+5. Optionally drive the running sim with the Playwright MCP browser tools for a screenshot diff against the two reference images (`../Baseline/Astronomy/astroUNL/naap/esp/animations/radialVelocitySimulator.jpg` and `…/transitSimulator.jpg`).
 
 ## Status (as of 2026-06-27)
 
@@ -294,7 +294,7 @@ Each milestone adds Properties before any view references them and adds new stri
    Static gates are green (#1 tsc/lint/tests/build; #3 numeric spot-checks are unit-tested in `EclipseGeometry`/`OrbitalMechanics`/`Presets`). Still to run by hand:
    - **§V2 — in-browser manual sweep:** `npm run dev`, then on each screen drag every slider through its range, apply each preset (RV 7, transit 11), toggle theoretical-curve / measurements / multiple-views, and run the animation — confirm the moving phase indicator tracks the orbit/transit and the y-axis rescales sensibly.
    - **§V4 — a11y tab-through:** tab through the `pdomOrder` (combo → number controls → checkboxes → time control → reset), confirm the live `currentDetails` paragraph re-announces as parameters change, and that the "?" keyboard-help dialog lists slider + combo-box + basic-actions sections.
-   - **§V5 (optional) — screenshot diff** vs `NAAP/astroUNL/naap/esp/animations/{radialVelocity,transit}Simulator.jpg` via the Playwright MCP browser tools.
+   - **§V5 (optional) — screenshot diff** vs `../Baseline/Astronomy/astroUNL/naap/esp/animations/{radialVelocity,transit}Simulator.jpg` via the Playwright MCP browser tools.
 
 2. **Localization review (optional polish).** The es/fr translations were produced by this pass and are complete (key parity verified), but a fluent speaker should review them before a real release — especially the a11y `currentDetails` patterns and the screen-summary sentences.
 

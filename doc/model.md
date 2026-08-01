@@ -122,7 +122,7 @@ measurements draw uniform random **phase**. Default: theoretical curve **on**, s
 
 ## References
 
-- NAAP *Extrasolar Planets* lab (student guide and modeling pages under `NAAP/astroUNL/naap/`).
+- NAAP *Extrasolar Planets* lab (student guide and modeling pages under `../Baseline/Astronomy/astroUNL/naap/`).
 - Original Flash simulators: *Radial Velocity Simulator* (`radialVelocitySimulator012`) and
   *Transit Simulator* (`transitSimulator017`).
 - In-repo port spec: `plan.md` (physics formulas §8).
