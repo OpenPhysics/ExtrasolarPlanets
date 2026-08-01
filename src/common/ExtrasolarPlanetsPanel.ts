@@ -25,21 +25,26 @@
  *   const panel = new ExtrasolarPlanetsPanel(content, { fill: "transparent" });
  */
 
+import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import type { Node } from "scenerystack/scenery";
-import type { PanelOptions } from "scenerystack/sun";
-import { Panel } from "scenerystack/sun";
+import { Panel, type PanelOptions } from "scenerystack/sun";
 import ExtrasolarPlanetsColors from "../ExtrasolarPlanetsColors.js";
 import { PANEL_CORNER_RADIUS } from "../ExtrasolarPlanetsConstants.js";
 
+export type ExtrasolarPlanetsPanelOptions = PanelOptions;
+
 export class ExtrasolarPlanetsPanel extends Panel {
-  public constructor(content: Node, providedOptions?: PanelOptions) {
-    super(content, {
-      fill: ExtrasolarPlanetsColors.panelBackgroundColorProperty,
-      stroke: ExtrasolarPlanetsColors.panelBorderColorProperty,
-      cornerRadius: PANEL_CORNER_RADIUS,
-      xMargin: 12,
-      yMargin: 10,
-      ...providedOptions,
-    });
+  public constructor(content: Node, providedOptions?: ExtrasolarPlanetsPanelOptions) {
+    const options = optionize<ExtrasolarPlanetsPanelOptions, EmptySelfOptions, PanelOptions>()(
+      {
+        fill: ExtrasolarPlanetsColors.panelBackgroundColorProperty,
+        stroke: ExtrasolarPlanetsColors.panelBorderColorProperty,
+        cornerRadius: PANEL_CORNER_RADIUS,
+        xMargin: 12,
+        yMargin: 10,
+      },
+      providedOptions,
+    );
+    super(content, options);
   }
 }

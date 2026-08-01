@@ -16,10 +16,10 @@
  * driving the chart cursor and the planet across the star together.
  */
 
+import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { Node, Rectangle } from "scenerystack/scenery";
 import { ResetAllButton, TimeControlNode } from "scenerystack/scenery-phet";
-import type { ScreenViewOptions } from "scenerystack/sim";
-import { ScreenView } from "scenerystack/sim";
+import { ScreenView, type ScreenViewOptions } from "scenerystack/sim";
 import {
   FLAT_RESET_ALL_BUTTON_OPTIONS,
   FLAT_TIME_CONTROL_NODE_OPTIONS,
@@ -32,14 +32,19 @@ import { TransitControlPanel } from "./TransitControlPanel.js";
 import { TransitScreenSummaryContent } from "./TransitScreenSummaryContent.js";
 import { TransitVisualizationNode } from "./TransitVisualizationNode.js";
 
+export type TransitScreenViewOptions = ScreenViewOptions;
+
 export class TransitScreenView extends ScreenView {
   private readonly model: TransitModel;
 
-  public constructor(model: TransitModel, options?: ScreenViewOptions) {
-    super({
-      screenSummaryContent: new TransitScreenSummaryContent(model),
-      ...options,
-    });
+  public constructor(model: TransitModel, providedOptions?: TransitScreenViewOptions) {
+    const options = optionize<TransitScreenViewOptions, EmptySelfOptions, ScreenViewOptions>()(
+      {
+        screenSummaryContent: new TransitScreenSummaryContent(model),
+      },
+      providedOptions,
+    );
+    super(options);
 
     this.model = model;
 

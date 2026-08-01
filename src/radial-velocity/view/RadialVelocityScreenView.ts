@@ -17,10 +17,10 @@
  * driving the chart cursor and orbit views together.
  */
 
+import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { Node, Rectangle } from "scenerystack/scenery";
 import { ResetAllButton, TimeControlNode } from "scenerystack/scenery-phet";
-import type { ScreenViewOptions } from "scenerystack/sim";
-import { ScreenView } from "scenerystack/sim";
+import { ScreenView, type ScreenViewOptions } from "scenerystack/sim";
 import {
   FLAT_RESET_ALL_BUTTON_OPTIONS,
   FLAT_TIME_CONTROL_NODE_OPTIONS,
@@ -33,15 +33,20 @@ import { RadialVelocityChartNode } from "./RadialVelocityChartNode.js";
 import { RadialVelocityControlPanel } from "./RadialVelocityControlPanel.js";
 import { RadialVelocityScreenSummaryContent } from "./RadialVelocityScreenSummaryContent.js";
 
+export type RadialVelocityScreenViewOptions = ScreenViewOptions;
+
 export class RadialVelocityScreenView extends ScreenView {
   private readonly model: RadialVelocityModel;
 
-  public constructor(model: RadialVelocityModel, options?: ScreenViewOptions) {
+  public constructor(model: RadialVelocityModel, providedOptions?: RadialVelocityScreenViewOptions) {
     // ── Accessibility: screen summary ───────────────────────────────────────────
-    super({
-      screenSummaryContent: new RadialVelocityScreenSummaryContent(model),
-      ...options,
-    });
+    const options = optionize<RadialVelocityScreenViewOptions, EmptySelfOptions, ScreenViewOptions>()(
+      {
+        screenSummaryContent: new RadialVelocityScreenSummaryContent(model),
+      },
+      providedOptions,
+    );
+    super(options);
 
     this.model = model;
 

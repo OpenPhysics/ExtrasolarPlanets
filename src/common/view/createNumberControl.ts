@@ -15,11 +15,12 @@
 import type { PhetioProperty } from "scenerystack/axon";
 import { DerivedProperty, type TReadOnlyProperty } from "scenerystack/axon";
 import type { Range } from "scenerystack/dot";
-import { NumberControl, type NumberControlOptions } from "scenerystack/scenery-phet";
+import { combineOptions } from "scenerystack/phet-core";
+import { NumberControl, type NumberControlOptions, type NumberDisplayOptions } from "scenerystack/scenery-phet";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import { FLAT_ARROW_BUTTON_OPTIONS } from "../ExtrasolarPlanetsButtonOptions.js";
 
-export type CreateNumberControlOptions = {
+type CreateNumberControlSelfOptions = {
   /** Localized unit suffix appended after the value (e.g. "AU", "m/s"). */
   unitsProperty?: TReadOnlyProperty<string>;
   /** Digits shown after the decimal point in the readout (default 0). */
@@ -32,13 +33,15 @@ export type CreateNumberControlOptions = {
   numberControlOptions?: NumberControlOptions;
 };
 
+export type CreateNumberControlOptions = CreateNumberControlSelfOptions;
+
 export function createNumberControl(
   titleProperty: TReadOnlyProperty<string>,
   numberProperty: PhetioProperty<number>,
   range: Range,
   providedOptions?: CreateNumberControlOptions,
 ): NumberControl {
-  const options = providedOptions ?? {};
+  const options = combineOptions<CreateNumberControlOptions>({ decimalPlaces: 0 }, providedOptions);
   const decimalPlaces = options.decimalPlaces ?? 0;
   const delta = options.delta ?? (range.max - range.min) / 100;
 
@@ -47,22 +50,33 @@ export function createNumberControl(
     ? new DerivedProperty([options.unitsProperty], (units) => `{{value}} ${units}`)
     : undefined;
 
-  return new NumberControl(titleProperty, numberProperty, range, {
-    delta,
-    accessibleName: options.accessibleName ?? titleProperty,
-    titleNodeOptions: {
+  const numberDisplayBase: NumberDisplayOptions = {
+    decimalPlaces,
+    useRichText: true,
+    textOptions: {
       fill: ExtrasolarPlanetsColors.textColorProperty,
-      maxWidth: 160,
     },
-    numberDisplayOptions: {
-      decimalPlaces,
-      useRichText: true,
-      textOptions: {
-        fill: ExtrasolarPlanetsColors.textColorProperty,
+  };
+  const numberDisplayOptions = valuePattern
+    ? combineOptions<NumberDisplayOptions>(numberDisplayBase, { valuePattern })
+    : numberDisplayBase;
+
+  return new NumberControl(
+    titleProperty,
+    numberProperty,
+    range,
+    combineOptions<NumberControlOptions>(
+      {
+        delta,
+        accessibleName: options.accessibleName ?? titleProperty,
+        titleNodeOptions: {
+          fill: ExtrasolarPlanetsColors.textColorProperty,
+          maxWidth: 160,
+        },
+        numberDisplayOptions,
       },
-      ...(valuePattern ? { valuePattern } : {}),
-    },
-    ...FLAT_ARROW_BUTTON_OPTIONS,
-    ...options.numberControlOptions,
-  });
+      FLAT_ARROW_BUTTON_OPTIONS,
+      options.numberControlOptions,
+    ),
+  );
 }
