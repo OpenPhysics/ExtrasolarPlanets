@@ -7,7 +7,7 @@
  * when the planet passes in front of the star ("eclipse of body 1") it occults
  * part of the stellar disk and the normalized flux dips.
  *
- * Faithful approximations preserved from the Flash original (plan.md §8):
+ * Faithful approximations preserved from the Flash original:
  *  - uniform disks, NO limb darkening
  *  - the planet radiates as a fixed 500 K blackbody
  *  - normalized flux = visualFlux / maxVisualFlux (the π factor cancels because

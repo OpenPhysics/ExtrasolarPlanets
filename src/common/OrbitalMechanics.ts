@@ -4,7 +4,7 @@
  * Pure, UI-free two-body orbital-mechanics helpers shared by both screens.
  * Every function is a faithful transcription of the maths in the NAAP Flash
  * sources (`Radial Velocity Component.as`, `Binary System Component.as`,
- * `Lightcurve Component II.as`); see plan.md §1 / §8 for the fidelity rules.
+ * `Lightcurve Component II.as`).
  *
  * Angle units are radians; SI everywhere else (m, kg, s). No SceneryStack types
  * are referenced so these functions are trivially unit-testable.

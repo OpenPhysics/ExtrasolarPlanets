@@ -209,7 +209,7 @@ export class TransitModel implements TModel {
 
   /**
    * Applies a preset's seven orbital/planet parameters (never noise, number of
-   * measurements, animation speed, or phase — plan.md §2).
+   * measurements, animation speed, or phase).
    */
   public applyPreset(preset: TransitPreset): void {
     this.planetMassProperty.value = preset.planetMass;

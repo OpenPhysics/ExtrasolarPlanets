@@ -8,7 +8,7 @@
  * projection an earth-bound observer sees), and a pseudo-**3-D Orbit View**
  * built with `Projection3D`.
  *
- * Geometry (AU model units, faithful to plan.md §1):
+ * Geometry (AU model units, faithful to the Flash original):
  *   - planet orbital-plane position: r = a(1−e²)/(1+e·cos ν), in direction ν+ω
  *   - star position = −(m_planet/m_star)·planet position (barycentric, opposite
  *     side; the Flash a1=(m2/m1)·a approximation).

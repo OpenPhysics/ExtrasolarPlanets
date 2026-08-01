@@ -2,7 +2,7 @@
  * StarProperties.test.ts
  *
  * Checks the main-sequence derivation chain against the canonical anchors from
- * plan.md §7: the Sun (G2V, ~5800 K, ~1 R☉), a low-mass M-dwarf, and the hot/cool
+ * the Sun (G2V, ~5800 K, ~1 R☉), a low-mass M-dwarf, and the hot/cool
  * endpoints of the class-V spectral-type table (O7 / M6).
  */
 

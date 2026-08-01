@@ -157,7 +157,7 @@ export class RadialVelocityModel implements TModel {
         this.eccentricityProperty,
       ],
       (periodSeconds, starMass, planetMass, axisAU, inclinationDeg, eccentricity) => {
-        // a1 = (m2/m1)·a — the Flash approximation for the star's orbit (plan.md §8).
+        // a1 = (m2/m1)·a — the Flash approximation for the star's orbit.
         const starAxisM = ((planetMass * RV_M_JUP_KG) / (starMass * M_SUN_KG)) * axisAU * AU_M;
         return radialVelocityAmplitude(periodSeconds, starAxisM, inclinationDeg * DEG_TO_RAD, eccentricity);
       },
@@ -207,7 +207,7 @@ export class RadialVelocityModel implements TModel {
 
   /**
    * Applies a preset's six orbital parameters (never noise, number of
-   * measurements, animation speed, or phase — plan.md §2).
+   * measurements, animation speed, or phase).
    */
   public applyPreset(preset: RadialVelocityPreset): void {
     this.starMassProperty.value = preset.starMass;

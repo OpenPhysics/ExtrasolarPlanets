@@ -3,7 +3,7 @@
  *
  * Exercises the transit light-curve physics: disk-overlap edge cases, the
  * blackbody factors, an out-of-eclipse flux of 1, and the HD 209458 b preset
- * (plan.md §3 / §7: period ≈ 3.47 d, a shallow but non-trivial transit).
+ *.
  */
 
 import { describe, expect, it } from "vitest";

@@ -5,7 +5,7 @@
  * rotating "3-D orbit" sub-view. It rotates orbit-plane points by the orbital
  * inclination / longitude and a camera orientation, then projects them
  * orthographically to 2-D so the whole view can be drawn with ordinary scenery
- * `Path`/`Line` nodes (no WebGL — see plan.md §1).
+ * `Path`/`Line` nodes (no WebGL).
  *
  * Everything here is pure `Vector2`/`Vector3` math, so it is straightforward to
  * unit-test and reuse. Angles are radians; lengths are whatever the caller

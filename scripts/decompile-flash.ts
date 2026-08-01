@@ -3,7 +3,7 @@
  *
  * Extract readable ActionScript (and optionally assets) from the original NAAP
  * Flash sources under `../Baseline/Astronomy/flash-animations/` (sibling Baseline repo), so the ported physics can be checked against the
- * real implementation. See plan.md → "Decompiling the Flash sources".
+ * real implementation.
  *
  * The `.fla` files are old binary (OLE compound) projects that no current tool
  * reads directly — but every one ships a sibling compiled `.swf`, and SWF → AS

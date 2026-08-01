@@ -2,7 +2,7 @@
  * OrbitalMechanics.test.ts
  *
  * Verifies the pure two-body helpers against analytic results and the
- * faithfulness spot-checks called out in plan.md §7 (Kepler period, anomaly
+ * faithfulness spot-checks called out for Flash faithfulness (Kepler period, anomaly
  * round-trips, RV amplitude).
  */
 
@@ -26,7 +26,7 @@ const TWO_PI: number = 2 * Math.PI;
 
 describe("keplerPeriodSeconds", () => {
   it("gives ~365.07 days for RV preset Option A (1 M☉ + 1 M_jup, 1 AU)", () => {
-    // plan.md §3 spot-check: the planet's mass is part of the total, nudging the
+    // Flash faithfulness spot-check: the planet's mass is part of the total, nudging the
     // period below the textbook 365.25 d to the verified 365.07 d.
     const periodDays = keplerPeriodSeconds(M_SUN_KG + RV_M_JUP_KG, AU_M) / SECONDS_PER_DAY;
     expect(periodDays).toBeCloseTo(365.07, 1);

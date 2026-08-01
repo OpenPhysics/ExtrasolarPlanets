@@ -16,8 +16,7 @@
  *
  * The physics constants are transcribed verbatim from the original NAAP Flash
  * simulators (`radialVelocitySimulator012`, `transitSimulator017`) so the
- * SceneryStack port reproduces their numbers exactly. See `plan.md`.
- */
+ * SceneryStack port reproduces their numbers exactly. */
 
 import { Range } from "scenerystack/dot";
 import ExtrasolarPlanetsNamespace from "./ExtrasolarPlanetsNamespace.js";
@@ -84,8 +83,7 @@ export const FLUX_CONSTANT = 1.89553328524593e-43;
 
 /**
  * Newton's-method convergence tolerance for Kepler's equation. The Flash sources
- * iterate to 1e-3; we tighten to 1e-8 (documented fidelity decision in plan.md
- * §8) — strictly more accurate, same algorithm and seed (E₀ = M).
+ * iterate to 1e-3; we tighten to 1e-8 — strictly more accurate, same algorithm and seed (E₀ = M).
  */
 export const KEPLER_TOLERANCE = 1e-8;
 

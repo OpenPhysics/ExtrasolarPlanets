@@ -5,7 +5,7 @@
  * `Radial Velocity Component.as` and `Lightcurve Component II.as` draw normal
  * deviates with the **Marsaglia polar method** (reject-sample a point in the
  * unit disc, then scale) — NOT the trigonometric Box–Muller form. Reproducing
- * the exact algorithm keeps the measurement scatter faithful (plan.md §8).
+ * the exact algorithm keeps the measurement scatter faithful.
  *
  *   do { x1 = 2r−1; x2 = 2r−1; s = x1²+x2² } while (s ≥ 1);
  *   factor = √(−2·ln s / s);   deviate = x1 · factor
@@ -25,7 +25,7 @@ export type UniformSource = () => number;
  *
  * @param mean - distribution mean
  * @param stdDev - standard deviation (σ); the Flash measurement noise is passed
- *   directly as σ (there is no `max(σ, …)` floor — plan.md §8)
+ *   directly as σ (there is no `max(σ, …)` floor)
  * @param nextDouble - uniform [0,1) source; defaults to `dotRandom.nextDouble()`
  */
 export function polarGaussian(
