@@ -1,5 +1,7 @@
 # Extrasolar Planets
 
+[![CI](https://github.com/OpenPhysics/ExtrasolarPlanets/actions/workflows/ci.yml/badge.svg)](https://github.com/OpenPhysics/ExtrasolarPlanets/actions/workflows/ci.yml)
+
 SceneryStack port of the NAAP *Extrasolar Planets* lab — two screens for the radial-velocity
 (Doppler wobble) and transit (light-curve dip) detection methods. Built with
 [SceneryStack](https://scenerystack.org/), Vite 8, TypeScript, and Biome 2.
