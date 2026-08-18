@@ -193,20 +193,35 @@ export class TransitChartNode extends Node {
     super({ children: [title, chartLayer] });
 
     // ── Live updates: redraw the curve + rescale the y-axis when physics changes
+    // Do not write modelYRange from a nested changedEmitter / Property notify: that
+    // reenters axon (and can overflow the stack via setModelYRange → ticks → layout).
+    let yAxisBusy = false;
     const updateYAxis = (yRange: Range): void => {
-      chartTransform.setModelYRange(yRange);
-      const step = niceStep(yRange.max - yRange.min);
-      const decimals = decimalPlacesForStep(step);
-      yGrid.setSpacing(step);
-      yTicks.setSpacing(step);
-      yLabels.setSpacing(step);
-      yLabels.setCreateLabel(
-        (value) =>
-          new Text(formatTickValue(value, decimals), {
-            font: TICK_LABEL_FONT,
-            fill: ExtrasolarPlanetsColors.chartTickColorProperty,
-          }),
-      );
+      if (yAxisBusy || yRange.equals(chartTransform.modelYRange)) {
+        return;
+      }
+      yAxisBusy = true;
+      try {
+        chartTransform.setModelYRange(yRange);
+        const step = niceStep(yRange.max - yRange.min);
+        const decimals = decimalPlacesForStep(step);
+        const spacingChanged = step !== yLabels.getSpacing();
+        yGrid.setSpacing(step);
+        yTicks.setSpacing(step);
+        yLabels.setSpacing(step);
+        // setCreateLabel always rebuilds every label; only do that when formatting changes.
+        if (spacingChanged) {
+          yLabels.setCreateLabel(
+            (value) =>
+              new Text(formatTickValue(value, decimals), {
+                font: TICK_LABEL_FONT,
+                fill: ExtrasolarPlanetsColors.chartTickColorProperty,
+              }),
+          );
+        }
+      } finally {
+        yAxisBusy = false;
+      }
     };
 
     // The y-axis must leave room for the measurement scatter, so it rescales when
