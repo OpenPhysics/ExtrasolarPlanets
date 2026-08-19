@@ -9,7 +9,12 @@
 
 import { Vector2 } from "scenerystack/dot";
 import { describe, expect, it } from "vitest";
-import { computeCurveYRange, decimalPlacesForStep, niceStep } from "../src/common/view/chartUtils.js";
+import {
+  applyChartRescale,
+  computeCurveYRange,
+  decimalPlacesForStep,
+  niceStep,
+} from "../src/common/view/chartUtils.js";
 
 /** A shallow transit dip: flux 1.0 with a small excursion down to 1 − depth. */
 function dipCurve(depth: number): Vector2[] {
@@ -34,6 +39,30 @@ describe("decimalPlacesForStep", () => {
     expect(decimalPlacesForStep(20)).toBe(0);
     expect(decimalPlacesForStep(0.2)).toBe(1);
     expect(decimalPlacesForStep(0.02)).toBe(2);
+  });
+});
+
+describe("applyChartRescale", () => {
+  it("applies spacing before range when the span grows", () => {
+    const order: string[] = [];
+    applyChartRescale(
+      1,
+      100,
+      () => order.push("range"),
+      () => order.push("spacing"),
+    );
+    expect(order).toEqual(["spacing", "range"]);
+  });
+
+  it("applies range before spacing when the span shrinks", () => {
+    const order: string[] = [];
+    applyChartRescale(
+      100,
+      1,
+      () => order.push("range"),
+      () => order.push("spacing"),
+    );
+    expect(order).toEqual(["range", "spacing"]);
   });
 });
 

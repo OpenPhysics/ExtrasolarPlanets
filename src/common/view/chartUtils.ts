@@ -51,6 +51,29 @@ export function formatTickValue(value: number, decimalPlaces: number): string {
 }
 
 /**
+ * Apply a new model range and a new tick spacing in the order that never asks
+ * bamboo's TickLabelSet to fill a large range with a leftover small spacing.
+ *
+ * TickLabelSet.update runs on every range or spacing change. Expanding the
+ * RV axis first (K jumping from ±12 m/s to kilometres per second) would
+ * generate tens of thousands of labels and crash the renderer.
+ */
+export function applyChartRescale(
+  oldSpan: number,
+  newSpan: number,
+  setRange: () => void,
+  setSpacing: () => void,
+): void {
+  if (newSpan >= oldSpan) {
+    setSpacing();
+    setRange();
+  } else {
+    setRange();
+    setSpacing();
+  }
+}
+
+/**
  * Y-axis `Range` for a sampled curve. The actual min/max of the data is first
  * expanded by `noiseMargin` (in model-y units) on each side so that simulated
  * measurement scatter — which spreads roughly ±3σ around the theoretical curve —

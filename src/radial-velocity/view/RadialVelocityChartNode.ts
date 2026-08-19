@@ -32,7 +32,13 @@ import { Range, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import { Orientation } from "scenerystack/phet-core";
 import { Line, Node, Text } from "scenerystack/scenery";
-import { computeCurveYRange, decimalPlacesForStep, formatTickValue, niceStep } from "../../common/view/chartUtils.js";
+import {
+  applyChartRescale,
+  computeCurveYRange,
+  decimalPlacesForStep,
+  formatTickValue,
+  niceStep,
+} from "../../common/view/chartUtils.js";
 import ExtrasolarPlanetsColors from "../../ExtrasolarPlanetsColors.js";
 import {
   CHART_NOISE_MARGIN_SIGMAS,
@@ -176,13 +182,19 @@ export class RadialVelocityChartNode extends Node {
       }
       yAxisBusy = true;
       try {
-        chartTransform.setModelYRange(yRange);
         const step = niceStep(yRange.max - yRange.min);
         const decimals = decimalPlacesForStep(step);
         const spacingChanged = step !== yLabels.getSpacing();
-        yGrid.setSpacing(step);
-        yTicks.setSpacing(step);
-        yLabels.setSpacing(step);
+        applyChartRescale(
+          chartTransform.modelYRange.getLength(),
+          yRange.getLength(),
+          () => chartTransform.setModelYRange(yRange),
+          () => {
+            yGrid.setSpacing(step);
+            yTicks.setSpacing(step);
+            yLabels.setSpacing(step);
+          },
+        );
         // setCreateLabel always rebuilds every label; only do that when formatting changes.
         if (spacingChanged) {
           yLabels.setCreateLabel(
